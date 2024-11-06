@@ -1,0 +1,342 @@
+
+{   
+    "pnr": "8419634582",
+    "status": true,
+    "code": 200,
+    "message": "Success.",
+    "error": "",
+    "data": {
+        "pnr": "2116884647",
+        "boardingInfo": {
+            "trainId": 2559,
+            "stationId": 8395,
+            "arrivalTime": "08:45:00",
+            "departureTime": "08:45:00",
+            "haltTime": "00:00:00",
+            "stationCode": "PRYJ",
+            "stationName": "Prayagraj Junction",
+            "travellingDay": 2,
+            "distance": "1517",
+            "platform": "0"
+        },
+        "destinationInfo": {},
+        "seatInfo": {
+            "coach": "RLWL",
+            "berth": "16",
+            "noOfSeats": 2
+        },
+        "trainInfo": {
+            "trainNo": "22129",
+            "name": "TULSI EXPRESS",
+            "boarding": "PRYJ",
+            "destination": "AYC",
+            "dt": "10-07-2024",
+            "boardingDayCount": null,
+            "fromStationName": null,
+            "toStationName": null,
+            "origin": null
+        },
+        "passengerInfo": [
+            {
+                "currentCoach": "RLWL",
+                "currentBerthNo": "16"
+            },
+            {
+                "currentCoach": "RLWL",
+                "currentBerthNo": "17"
+            }
+        ],
+        "trainRoutes": [
+            {
+                "trainId": 2559,
+                "stationId": 157,
+                "arrivalTime": "06:00:00",
+                "departureTime": "06:00:00",
+                "haltTime": "00:00:00",
+                "stationCode": "LTT",
+                "stationName": "Lokmanyatilak T",
+                "travellingDay": 1,
+                "distance": "0",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 204,
+                "arrivalTime": "06:18:00",
+                "departureTime": "06:20:00",
+                "haltTime": "00:02:00",
+                "stationCode": "TNA",
+                "stationName": "Thane",
+                "travellingDay": 1,
+                "distance": "18",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 151,
+                "arrivalTime": "06:37:00",
+                "departureTime": "06:40:00",
+                "haltTime": "00:03:00",
+                "stationCode": "KYN",
+                "stationName": "Kalyan Jn",
+                "travellingDay": 1,
+                "distance": "38",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 57,
+                "arrivalTime": "09:05:00",
+                "departureTime": "09:10:00",
+                "haltTime": "00:05:00",
+                "stationCode": "NK",
+                "stationName": "Nasik Road",
+                "travellingDay": 1,
+                "distance": "172",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 46,
+                "arrivalTime": "10:00:00",
+                "departureTime": "10:05:00",
+                "haltTime": "00:05:00",
+                "stationCode": "MMR",
+                "stationName": "Manmad Jn",
+                "travellingDay": 1,
+                "distance": "245",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 16,
+                "arrivalTime": "12:30:00",
+                "departureTime": "12:35:00",
+                "haltTime": "00:05:00",
+                "stationCode": "BSL",
+                "stationName": "Bhusaval Jn",
+                "travellingDay": 1,
+                "distance": "429",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 6,
+                "arrivalTime": "13:23:00",
+                "departureTime": "13:25:00",
+                "haltTime": "00:02:00",
+                "stationCode": "BAU",
+                "stationName": "Burhanpur",
+                "travellingDay": 1,
+                "distance": "483",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 38,
+                "arrivalTime": "15:17:00",
+                "departureTime": "15:20:00",
+                "haltTime": "00:03:00",
+                "stationCode": "KNW",
+                "stationName": "Khandwa",
+                "travellingDay": 1,
+                "distance": "552",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 7121,
+                "arrivalTime": "16:32:00",
+                "departureTime": "16:34:00",
+                "haltTime": "00:02:00",
+                "stationCode": "HD",
+                "stationName": "Harda",
+                "travellingDay": 1,
+                "distance": "660",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 7179,
+                "arrivalTime": "16:48:00",
+                "departureTime": "16:50:00",
+                "haltTime": "00:02:00",
+                "stationCode": "TBN",
+                "stationName": "Timarni",
+                "travellingDay": 1,
+                "distance": "674",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 7114,
+                "arrivalTime": "17:55:00",
+                "departureTime": "18:00:00",
+                "haltTime": "00:05:00",
+                "stationCode": "ET",
+                "stationName": "Itarsi Jn",
+                "travellingDay": 1,
+                "distance": "736",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 8500,
+                "arrivalTime": "19:28:00",
+                "departureTime": "19:30:00",
+                "haltTime": "00:02:00",
+                "stationCode": "RKMP",
+                "stationName": "Rani Kamlapati",
+                "travellingDay": 1,
+                "distance": "828",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 7099,
+                "arrivalTime": "19:50:00",
+                "departureTime": "19:55:00",
+                "haltTime": "00:05:00",
+                "stationCode": "BPL",
+                "stationName": "Bhopal Jn",
+                "travellingDay": 1,
+                "distance": "834",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 7094,
+                "arrivalTime": "21:48:00",
+                "departureTime": "21:50:00",
+                "haltTime": "00:02:00",
+                "stationCode": "BINA",
+                "stationName": "Bina Jn",
+                "travellingDay": 1,
+                "distance": "972",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 2097,
+                "arrivalTime": "22:32:00",
+                "departureTime": "22:34:00",
+                "haltTime": "00:02:00",
+                "stationCode": "LAR",
+                "stationName": "Lalitpur Jn",
+                "travellingDay": 1,
+                "distance": "1035",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 8514,
+                "arrivalTime": "00:02:00",
+                "departureTime": "00:12:00",
+                "haltTime": "00:10:00",
+                "stationCode": "VGLJ",
+                "stationName": "Virangana Lakshmibai Jhansi Junction",
+                "travellingDay": 2,
+                "distance": "1125",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 2107,
+                "arrivalTime": "01:04:00",
+                "departureTime": "01:06:00",
+                "haltTime": "00:02:00",
+                "stationCode": "MRPR",
+                "stationName": "Mau Ranipur",
+                "travellingDay": 2,
+                "distance": "1189",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 2069,
+                "arrivalTime": "01:28:00",
+                "departureTime": "01:30:00",
+                "haltTime": "00:02:00",
+                "stationCode": "HPP",
+                "stationName": "Harpalpur",
+                "travellingDay": 2,
+                "distance": "1210",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 2099,
+                "arrivalTime": "03:00:00",
+                "departureTime": "03:02:00",
+                "haltTime": "00:02:00",
+                "stationCode": "MBA",
+                "stationName": "Mahoba Jn",
+                "travellingDay": 2,
+                "distance": "1263",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 2034,
+                "arrivalTime": "04:20:00",
+                "departureTime": "04:25:00",
+                "haltTime": "00:05:00",
+                "stationCode": "BNDA",
+                "stationName": "Banda Jn",
+                "travellingDay": 2,
+                "distance": "1316",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 2017,
+                "arrivalTime": "04:49:00",
+                "departureTime": "04:51:00",
+                "haltTime": "00:02:00",
+                "stationCode": "ATE",
+                "stationName": "Atarra",
+                "travellingDay": 2,
+                "distance": "1348",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 2045,
+                "arrivalTime": "05:17:00",
+                "departureTime": "05:19:00",
+                "haltTime": "00:02:00",
+                "stationCode": "CKTD",
+                "stationName": "Chitrakutdham K",
+                "travellingDay": 2,
+                "distance": "1385",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 1956,
+                "arrivalTime": "06:30:00",
+                "departureTime": "06:35:00",
+                "haltTime": "00:05:00",
+                "stationCode": "MKP",
+                "stationName": "Manikpur",
+                "travellingDay": 2,
+                "distance": "1417",
+                "platform": "0"
+            },
+            {
+                "trainId": 2559,
+                "stationId": 8395,
+                "arrivalTime": "08:45:00",
+                "departureTime": "08:45:00",
+                "haltTime": "00:00:00",
+                "stationCode": "PRYJ",
+                "stationName": "Prayagraj Junction",
+                "travellingDay": 2,
+                "distance": "1517",
+                "platform": "0"
+            }
+        ]
+    }
+}
+
+[{"pnrNumber":"8724878121","dateOfJourney":"Nov 17, 2024 7:35:50 PM","trainNumber":"12405","trainName":"GONDWANA EXPRESS","sourceStation":"BPL","destinationStation":"NZM","reservationUpto":"NZM","boardingPoint":"BPL","journeyClass":"3A","numberOfpassenger":5,"chartStatus":"Chart Not Prepared","informationMessage":["",""],"passengerList":[{"passengerSerialNumber":1,"passengerFoodChoice":"","concessionOpted":false,"forGoConcessionOpted":false,"passengerIcardFlag":false,"childBerthFlag":false,"passengerNationality":"IN","passengerQuota":"GN","passengerCoachPosition":0,"waitListType":12,"bookingStatusIndex":0,"bookingStatus":"RLWL","bookingCoachId":"","bookingBerthNo":2,"bookingStatusDetails":"RLWL/2","currentStatusIndex":0,"currentStatus":"RLWL","currentCoachId":"","currentBerthNo":2,"currentStatusDetails":"RLWL/2"},{"passengerSerialNumber":2,"passengerFoodChoice":"","concessionOpted":false,"forGoConcessionOpted":false,"passengerIcardFlag":false,"childBerthFlag":false,"passengerNationality":"IN","passengerQuota":"GN","passengerCoachPosition":0,"waitListType":12,"bookingStatusIndex":0,"bookingStatus":"RLWL","bookingCoachId":"","bookingBerthNo":3,"bookingStatusDetails":"RLWL/3","currentStatusIndex":0,"currentStatus":"RLWL","currentCoachId":"","currentBerthNo":3,"currentStatusDetails":"RLWL/3"},{"passengerSerialNumber":3,"passengerFoodChoice":"","concessionOpted":false,"forGoConcessionOpted":false,"passengerIcardFlag":false,"childBerthFlag":false,"passengerNationality":"IN","passengerQuota":"GN","passengerCoachPosition":0,"waitListType":12,"bookingStatusIndex":0,"bookingStatus":"RLWL","bookingCoachId":"","bookingBerthNo":4,"bookingStatusDetails":"RLWL/4","currentStatusIndex":0,"currentStatus":"RLWL","currentCoachId":"","currentBerthNo":4,"currentStatusDetails":"RLWL/4"},{"passengerSerialNumber":4,"passengerFoodChoice":"","concessionOpted":false,"forGoConcessionOpted":false,"passengerIcardFlag":false,"childBerthFlag":false,"passengerNationality":"IN","passengerQuota":"GN","passengerCoachPosition":0,"waitListType":12,"bookingStatusIndex":0,"bookingStatus":"RLWL","bookingCoachId":"","bookingBerthNo":5,"bookingStatusDetails":"RLWL/5","currentStatusIndex":0,"currentStatus":"RLWL","currentCoachId":"","currentBerthNo":5,"currentStatusDetails":"RLWL/5"},{"passengerSerialNumber":5,"passengerFoodChoice":"","concessionOpted":false,"forGoConcessionOpted":false,"passengerIcardFlag":false,"childBerthFlag":false,"passengerNationality":"IN","passengerQuota":"GN","passengerCoachPosition":0,"waitListType":12,"bookingStatusIndex":0,"bookingStatus":"RLWL","bookingCoachId":"","bookingBerthNo":6,"bookingStatusDetails":"RLWL/6","currentStatusIndex":0,"currentStatus":"RLWL","currentCoachId":"","currentBerthNo":6,"currentStatusDetails":"RLWL/6"}],"timeStamp":"Nov 1, 2024 12:37:50 PM","bookingFare":5400,"ticketFare":5400,"quota":"GN","reasonType":"S","ticketTypeInPrs":"E","waitListType":0,"bookingDate":"Oct 26, 2024 12:00:00 AM","arrivalDate":"Nov 1, 2024 5:00:50 AM","mobileNumber":"","distance":694,"isWL":"N"}]

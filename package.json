@@ -1,0 +1,16 @@
+{
+  "name": "showmyjourney",
+  "version": "1.0.0",
+  "description": "An app which will summarise a list of PNRs into a table by making it easy to take the glimpse of the journey",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "Avdhesh Gautam",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4"
+  }
+}

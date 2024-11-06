@@ -1,0 +1,36 @@
+DateOfJourney
+
+TrainNumber/TrainName               FROM - TO           
+
+S.No | CurrentBookingDetails
+
+Distance/Fare                       JourneyClass/ChartPrepared
+
+
+** Holding Sorted PNR Details **
+    1. Defin an array
+    2. Define an object
+    3. Define a key = Date + Time
+        1. Add this key into the object
+        2. Add this key into the array
+    4. At the end, sort the array
+    5. TR the array and save the details into the template
+
+
+    currPNRDetailsObj = {
+        trainName: trainName,
+        trainNumber: trainNumber,
+        dateOfJourney: dateOfJourney,
+        sourceStation: sourceStation,
+        destinationStation: destinationStation,
+        bookingFare: bookingFare,
+        distance: distance,
+        journeyClass: journeyClass,
+        chartPrepared: chartPrepared,
+        passengerList: passengerList
+        }
+
+pnrDetailsObject = 
+{
+    currPNRdateTime: currPNRDetailsObj
+}

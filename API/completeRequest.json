@@ -1,0 +1,3955 @@
+
+{
+    status: 200,
+    statusText: "OK",
+    headers: {
+      date: "Sat, 26 Oct 2024 14:11:09 GMT",
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "2199",
+      connection: "close",
+      etag: "W/\"897-G0r8k9hFas0+SkgH27L/Dv7AG54\"",
+      "x-powered-by": "Express",
+      "x-ratelimit-requests-limit": "40",
+      "x-ratelimit-requests-remaining": "35",
+      "x-ratelimit-requests-reset": "69258",
+      "x-ratelimit-rapid-free-plans-hard-limit-limit": "500000",
+      "x-ratelimit-rapid-free-plans-hard-limit-remaining": "499995",
+      "x-ratelimit-rapid-free-plans-hard-limit-reset": "2661258",
+      server: "RapidAPI-1.2.8",
+      "x-rapidapi-version": "1.2.8",
+      "x-rapidapi-region": "AWS - ap-southeast-1",
+      "x-rapidapi-request-id": "72c47a9bf8e8888babefe5421dde8c5f842ae25c4e4cf93c32531876b612c741",
+    },
+    config: {
+      transitional: {
+        silentJSONParsing: true,
+        forcedJSONParsing: true,
+        clarifyTimeoutError: false,
+      },
+      adapter: [
+        "xhr",
+        "http",
+        "fetch",
+      ],
+      transformRequest: [
+        function transformRequest(data, headers) {
+          const contentType = headers.getContentType() || '';
+          const hasJSONContentType = contentType.indexOf('application/json') > -1;
+          const isObjectPayload = utils$1.isObject(data);
+          
+          if (isObjectPayload && utils$1.isHTMLForm(data)) {
+            data = new FormData(data);
+          }
+          
+          const isFormData = utils$1.isFormData(data);
+          
+          if (isFormData) {
+            return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
+          }
+          
+          if (utils$1.isArrayBuffer(data) ||
+            utils$1.isBuffer(data) ||
+            utils$1.isStream(data) ||
+            utils$1.isFile(data) ||
+            utils$1.isBlob(data) ||
+            utils$1.isReadableStream(data)
+          ) {
+            return data;
+          }
+          if (utils$1.isArrayBufferView(data)) {
+            return data.buffer;
+          }
+          if (utils$1.isURLSearchParams(data)) {
+            headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
+            return data.toString();
+          }
+          
+          let isFileList;
+          
+          if (isObjectPayload) {
+            if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+              return toURLEncodedForm(data, this.formSerializer).toString();
+            }
+          
+            if ((isFileList = utils$1.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
+              const _FormData = this.env && this.env.FormData;
+          
+              return toFormData(
+                isFileList ? {'files[]': data} : data,
+                _FormData && new _FormData(),
+                this.formSerializer
+              );
+            }
+          }
+          
+          if (isObjectPayload || hasJSONContentType ) {
+            headers.setContentType('application/json', false);
+            return stringifySafely(data);
+          }
+          
+          return data;
+        },
+      ],
+      transformResponse: [
+        function transformResponse(data) {
+          const transitional = this.transitional || defaults.transitional;
+          const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
+          const JSONRequested = this.responseType === 'json';
+          
+          if (utils$1.isResponse(data) || utils$1.isReadableStream(data)) {
+            return data;
+          }
+          
+          if (data && utils$1.isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
+            const silentJSONParsing = transitional && transitional.silentJSONParsing;
+            const strictJSONParsing = !silentJSONParsing && JSONRequested;
+          
+            try {
+              return JSON.parse(data);
+            } catch (e) {
+              if (strictJSONParsing) {
+                if (e.name === 'SyntaxError') {
+                  throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
+                }
+                throw e;
+              }
+            }
+          }
+          
+          return data;
+        },
+      ],
+      timeout: 0,
+      xsrfCookieName: "XSRF-TOKEN",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: {
+        FormData: function FormData(options) {
+          if (!(this instanceof FormData)) {
+            return new FormData(options);
+          }
+          
+          this._overheadLength = 0;
+          this._valueLength = 0;
+          this._valuesToMeasure = [];
+          
+          CombinedStream.call(this);
+          
+          options = options || {};
+          for (var option in options) {
+            this[option] = options[option];
+          }
+        },
+        Blob: class Blob {
+          /**
+           * @typedef {string|ArrayBuffer|ArrayBufferView|Blob} SourcePart
+           */
+          
+          /**
+           * @param {SourcePart[]} [sources]
+           * @param {{
+           *   endings? : string,
+           *   type? : string,
+           * }} [options]
+           * @constructs {Blob}
+           */
+          constructor(sources = [], options) {
+            if (sources === null ||
+                typeof sources[SymbolIterator] !== 'function' ||
+                typeof sources === 'string') {
+              throw new ERR_INVALID_ARG_TYPE('sources', 'a sequence', sources);
+            }
+            validateDictionary(options, 'options');
+            let {
+              type = '',
+              endings = 'transparent',
+            } = options ?? kEmptyObject;
+          
+            endings = `${endings}`;
+            if (endings !== 'transparent' && endings !== 'native')
+              throw new ERR_INVALID_ARG_VALUE('options.endings', endings);
+          
+            let length = 0;
+            const sources_ = ArrayFrom(sources, (source) => {
+              const { 0: len, 1: src } = getSource(source, endings);
+              length += len;
+              return src;
+            });
+          
+            if (!isUint32(length))
+              throw new ERR_BUFFER_TOO_LARGE(0xFFFFFFFF);
+          
+            this[kHandle] = _createBlob(sources_, length);
+            this[kLength] = length;
+          
+            type = `${type}`;
+            this[kType] = RegExpPrototypeExec(disallowedTypeCharacters, type) !== null ?
+              '' : StringPrototypeToLowerCase(type);
+          
+            // eslint-disable-next-line no-constructor-return
+            return makeTransferable(this);
+          }
+          
+          [kInspect](depth, options) {
+            if (depth < 0)
+              return this;
+          
+            const opts = {
+              ...options,
+              depth: options.depth == null ? null : options.depth - 1,
+            };
+          
+            return `Blob ${inspect({
+              size: this.size,
+              type: this.type,
+            }, opts)}`;
+          }
+          
+          [kClone]() {
+            const handle = this[kHandle];
+            const type = this[kType];
+            const length = this[kLength];
+            return {
+              data: { handle, type, length },
+              deserializeInfo: 'internal/blob:ClonedBlob',
+            };
+          }
+          
+          [kDeserialize]({ handle, type, length }) {
+            this[kHandle] = handle;
+            this[kType] = type;
+            this[kLength] = length;
+          }
+          
+          /**
+           * @readonly
+           * @type {string}
+           */
+          get type() {
+            if (!isBlob(this))
+              throw new ERR_INVALID_THIS('Blob');
+            return this[kType];
+          }
+          
+          /**
+           * @readonly
+           * @type {number}
+           */
+          get size() {
+            if (!isBlob(this))
+              throw new ERR_INVALID_THIS('Blob');
+            return this[kLength];
+          }
+          
+          /**
+           * @param {number} [start]
+           * @param {number} [end]
+           * @param {string} [contentType]
+           * @returns {Blob}
+           */
+          slice(start = 0, end = this[kLength], contentType = '') {
+            if (!isBlob(this))
+              throw new ERR_INVALID_THIS('Blob');
+            if (start < 0) {
+              start = MathMax(this[kLength] + start, 0);
+            } else {
+              start = MathMin(start, this[kLength]);
+            }
+            start |= 0;
+          
+            if (end < 0) {
+              end = MathMax(this[kLength] + end, 0);
+            } else {
+              end = MathMin(end, this[kLength]);
+            }
+            end |= 0;
+          
+            contentType = `${contentType}`;
+            if (RegExpPrototypeExec(disallowedTypeCharacters, contentType) !== null) {
+              contentType = '';
+            } else {
+              contentType = StringPrototypeToLowerCase(contentType);
+            }
+          
+            const span = MathMax(end - start, 0);
+          
+            return createBlob(
+              this[kHandle].slice(start, start + span),
+              span,
+              contentType);
+          }
+          
+          /**
+           * @returns {Promise<ArrayBuffer>}
+           */
+          arrayBuffer() {
+            if (!isBlob(this))
+              return PromiseReject(new ERR_INVALID_THIS('Blob'));
+          
+            // If there's already a promise in flight for the content,
+            // reuse it, but only while it's in flight. After the cached
+            // promise resolves it will be cleared, allowing it to be
+            // garbage collected as soon as possible.
+            if (this[kArrayBufferPromise])
+              return this[kArrayBufferPromise];
+          
+            const job = new FixedSizeBlobCopyJob(this[kHandle]);
+          
+            const ret = job.run();
+          
+            // If the job returns a value immediately, the ArrayBuffer
+            // was generated synchronously and should just be returned
+            // directly.
+            if (ret !== undefined)
+              return PromiseResolve(ret);
+          
+            const {
+              promise,
+              resolve,
+              reject,
+            } = createDeferredPromise();
+          
+            job.ondone = (err, ab) => {
+              if (err !== undefined)
+                return reject(new AbortError(undefined, { cause: err }));
+              resolve(ab);
+            };
+            this[kArrayBufferPromise] =
+            SafePromisePrototypeFinally(
+              promise,
+              () => this[kArrayBufferPromise] = undefined);
+          
+            return this[kArrayBufferPromise];
+          }
+          
+          /**
+           * @returns {Promise<string>}
+           */
+          async text() {
+            if (!isBlob(this))
+              throw new ERR_INVALID_THIS('Blob');
+          
+            dec ??= new TextDecoder();
+          
+            return dec.decode(await this.arrayBuffer());
+          }
+          
+          /**
+           * @returns {ReadableStream}
+           */
+          stream() {
+            if (!isBlob(this))
+              throw new ERR_INVALID_THIS('Blob');
+          
+            const self = this;
+            return new lazyReadableStream({
+              async start() {
+                this[kState] = await self.arrayBuffer();
+                this[kIndex] = 0;
+              },
+          
+              pull(controller) {
+                if (this[kState].byteLength - this[kIndex] <= kMaxChunkSize) {
+                  controller.enqueue(new Uint8Array(this[kState], this[kIndex]));
+                  controller.close();
+                  this[kState] = undefined;
+                } else {
+                  controller.enqueue(new Uint8Array(this[kState], this[kIndex], kMaxChunkSize));
+                  this[kIndex] += kMaxChunkSize;
+                }
+              },
+            });
+          }
+        },
+      },
+      validateStatus: function validateStatus(status) {
+        return status >= 200 && status < 300;
+      },
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": undefined,
+        "x-rapidapi-key": "b72294afa3msh7382f0e6fd3b2acp146e49jsn9f3792d24b5b",
+        "User-Agent": "axios/1.7.2",
+        "Accept-Encoding": "gzip, compress, deflate, br",
+      },
+      url: "https://irctc-indian-railway-pnr-status.p.rapidapi.com/getPNRStatus/8124880126",
+      method: "get",
+      data: undefined,
+    },
+    request: {
+      _events: {
+        abort: function (arg1, arg2, arg3) {
+          this._redirectable.emit(event, arg1, arg2, arg3);
+        },
+        aborted: function (arg1, arg2, arg3) {
+          this._redirectable.emit(event, arg1, arg2, arg3);
+        },
+        connect: function (arg1, arg2, arg3) {
+          this._redirectable.emit(event, arg1, arg2, arg3);
+        },
+        error: function (arg1, arg2, arg3) {
+          this._redirectable.emit(event, arg1, arg2, arg3);
+        },
+        socket: function (arg1, arg2, arg3) {
+          this._redirectable.emit(event, arg1, arg2, arg3);
+        },
+        timeout: function (arg1, arg2, arg3) {
+          this._redirectable.emit(event, arg1, arg2, arg3);
+        },
+        finish: function requestOnFinish() {
+          const req = this;
+          
+          if (req.shouldKeepAlive && req._ended)
+            responseKeepAlive(req);
+        },
+      },
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [
+      ],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: "",
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: {
+        _tlsOptions: {
+          allowHalfOpen: undefined,
+          pipe: false,
+          secureContext: {
+            context: {
+            },
+          },
+          isServer: false,
+          requestCert: true,
+          rejectUnauthorized: true,
+          session: undefined,
+          ALPNProtocols: undefined,
+          requestOCSP: undefined,
+          enableTrace: undefined,
+          pskCallback: undefined,
+          highWaterMark: undefined,
+          onread: undefined,
+          signal: undefined,
+        },
+        _secureEstablished: true,
+        _securePending: false,
+        _newSessionPending: false,
+        _controlReleased: true,
+        secureConnecting: false,
+        _SNICallback: null,
+        servername: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+        alpnProtocol: false,
+        authorized: true,
+        authorizationError: null,
+        encrypted: true,
+        _events: {
+          close: [
+            function onSocketCloseDestroySSL() {
+              // Make sure we are not doing it on OpenSSL's stack
+              setImmediate(destroySSL, this);
+              this[kRes] = null;
+            },
+            function () { [native code] },
+            function onClose(err) {
+              debug('CLIENT socket onClose');
+              // This is the only place where sockets get removed from the Agent.
+              // If you want to remove a socket from the pool, just close it.
+              // All socket errors end in a close event anyway.
+              agent.totalSocketCount--;
+              agent.removeSocket(s, options);
+            },
+            function socketCloseListener() {
+              const socket = this;
+              const req = socket._httpMessage;
+              debug('HTTP socket close');
+              
+              // NOTE: It's important to get parser here, because it could be freed by
+              // the `socketOnData`.
+              const parser = socket.parser;
+              const res = req.res;
+              
+              req.destroyed = true;
+              if (res) {
+                // Socket closed before we emitted 'end' below.
+                if (!res.complete) {
+                  res.destroy(connResetException('aborted'));
+                }
+                req._closed = true;
+                req.emit('close');
+                if (!res.aborted && res.readable) {
+                  res.push(null);
+                }
+              } else {
+                if (!req.socket._hadError) {
+                  // This socket error fired before we started to
+                  // receive a response. The error needs to
+                  // fire on the request.
+                  req.socket._hadError = true;
+                  req.emit('error', connResetException('socket hang up'));
+                }
+                req._closed = true;
+                req.emit('close');
+              }
+              
+              // Too bad.  That output wasn't getting written.
+              // This is pretty terrible that it doesn't raise an error.
+              // Fixed better in v0.10
+              if (req.outputData)
+                req.outputData.length = 0;
+              
+              if (parser) {
+                parser.finish();
+                freeParser(parser, req, socket);
+              }
+            },
+          ],
+          end: function onReadableStreamEnd() {
+            if (!this.allowHalfOpen) {
+              this.write = writeAfterFIN;
+            }
+          },
+          newListener: function keylogNewListener(event) {
+            if (event !== 'keylog')
+              return;
+            
+            // Guard against enableKeylogCallback after destroy
+            if (!this._handle) return;
+            this._handle.enableKeylogCallback();
+            
+            // Remove this listener since it's no longer needed.
+            this.removeListener('newListener', keylogNewListener);
+          },
+          secure: function onConnectSecure() {
+            const options = this[kConnectOptions];
+            
+            // Check the size of DHE parameter above minimum requirement
+            // specified in options.
+            const ekeyinfo = this.getEphemeralKeyInfo();
+            if (ekeyinfo.type === 'DH' && ekeyinfo.size < options.minDHSize) {
+              const err = new ERR_TLS_DH_PARAM_SIZE(ekeyinfo.size);
+              debug('client emit:', err);
+              this.emit('error', err);
+              this.destroy();
+              return;
+            }
+            
+            let verifyError = this._handle.verifyError();
+            
+            // Verify that server's identity matches it's certificate's names
+            // Unless server has resumed our existing session
+            if (!verifyError && !this.isSessionReused()) {
+              const hostname = options.servername ||
+                             options.host ||
+                             (options.socket && options.socket._host) ||
+                             'localhost';
+              const cert = this.getPeerCertificate(true);
+              verifyError = options.checkServerIdentity(hostname, cert);
+            }
+            
+            if (verifyError) {
+              this.authorized = false;
+              this.authorizationError = verifyError.code || verifyError.message;
+            
+              // rejectUnauthorized property can be explicitly defined as `undefined`
+              // causing the assignment to default value (`true`) fail. Before assigning
+              // it to the tlssock connection options, explicitly check if it is false
+              // and update rejectUnauthorized property. The property gets used by
+              // TLSSocket connection handler to allow or reject connection if
+              // unauthorized.
+              // This check is potentially redundant, however it is better to keep it
+              // in case the option object gets modified somewhere.
+              if (options.rejectUnauthorized !== false) {
+                this.destroy(verifyError);
+                return;
+              }
+              debug('client emit secureConnect. rejectUnauthorized: %s, ' +
+                    'authorizationError: %s', options.rejectUnauthorized,
+                    this.authorizationError);
+              this.secureConnecting = false;
+              this.emit('secureConnect');
+            } else {
+              this.authorized = true;
+              debug('client emit secureConnect. authorized:', this.authorized);
+              this.secureConnecting = false;
+              this.emit('secureConnect');
+            }
+            
+            this[kIsVerified] = true;
+            const session = this[kPendingSession];
+            this[kPendingSession] = null;
+            if (session)
+              this.emit('session', session);
+            
+            this.removeListener('end', onConnectEnd);
+          },
+          session: (session) => {
+            this._cacheSession(options._agentKey, session);
+          },
+          free: function onFree() {
+            debug('CLIENT socket onFree');
+            agent.emit('free', s, options);
+          },
+          timeout: function onTimeout() {
+            debug('CLIENT socket onTimeout');
+            
+            // Destroy if in free list.
+            // TODO(ronag): Always destroy, even if not in free list.
+            const sockets = agent.freeSockets;
+            if (ArrayPrototypeSome(ObjectKeys(sockets), (name) =>
+              ArrayPrototypeIncludes(sockets[name], s),
+            )) {
+              return s.destroy();
+            }
+          },
+          agentRemove: function onRemove() {
+            // We need this function for cases like HTTP 'upgrade'
+            // (defined by WebSockets) where we need to remove a socket from the
+            // pool because it'll be locked up indefinitely
+            debug('CLIENT socket onRemove');
+            agent.totalSocketCount--;
+            agent.removeSocket(s, options);
+            s.removeListener('close', onClose);
+            s.removeListener('free', onFree);
+            s.removeListener('timeout', onTimeout);
+            s.removeListener('agentRemove', onRemove);
+          },
+          error: function socketErrorListener(err) {
+            const socket = this;
+            const req = socket._httpMessage;
+            debug('SOCKET ERROR:', err.message, err.stack);
+            
+            if (req) {
+              // For Safety. Some additional errors might fire later on
+              // and we need to make sure we don't double-fire the error event.
+              req.socket._hadError = true;
+              req.emit('error', err);
+            }
+            
+            const parser = socket.parser;
+            if (parser) {
+              parser.finish();
+              freeParser(parser, req, socket);
+            }
+            
+            // Ensure that no further data will come out of the socket
+            socket.removeListener('data', socketOnData);
+            socket.removeListener('end', socketOnEnd);
+            socket.destroy();
+          },
+          finish: function () { [native code] },
+        },
+        _eventsCount: 10,
+        connecting: false,
+        _hadError: false,
+        _parent: null,
+        _host: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+        _closeAfterHandlingError: false,
+        _readableState: {
+          objectMode: false,
+          highWaterMark: 16384,
+          buffer: {
+            head: null,
+            tail: null,
+            length: 0,
+          },
+          length: 0,
+          pipes: [
+          ],
+          flowing: true,
+          ended: false,
+          endEmitted: false,
+          reading: true,
+          constructed: true,
+          sync: false,
+          needReadable: true,
+          emittedReadable: false,
+          readableListening: false,
+          resumeScheduled: false,
+          errorEmitted: false,
+          emitClose: false,
+          autoDestroy: true,
+          destroyed: false,
+          errored: null,
+          closed: false,
+          closeEmitted: false,
+          defaultEncoding: "utf8",
+          awaitDrainWriters: null,
+          multiAwaitDrain: false,
+          readingMore: false,
+          dataEmitted: true,
+          decoder: null,
+          encoding: null,
+        },
+        _maxListeners: undefined,
+        _writableState: {
+          objectMode: false,
+          highWaterMark: 16384,
+          finalCalled: true,
+          needDrain: false,
+          ending: true,
+          ended: true,
+          finished: false,
+          destroyed: false,
+          decodeStrings: false,
+          defaultEncoding: "utf8",
+          length: 0,
+          writing: false,
+          corked: 0,
+          sync: false,
+          bufferProcessing: false,
+          onwrite: function () { [native code] },
+          writecb: null,
+          writelen: 0,
+          afterWriteTickInfo: null,
+          buffered: [
+          ],
+          bufferedIndex: 0,
+          allBuffers: true,
+          allNoop: true,
+          pendingcb: 1,
+          constructed: true,
+          prefinished: false,
+          errorEmitted: false,
+          emitClose: false,
+          autoDestroy: true,
+          errored: null,
+          closed: false,
+          closeEmitted: false,
+        },
+        allowHalfOpen: false,
+        _sockname: null,
+        _pendingData: null,
+        _pendingEncoding: "",
+        server: undefined,
+        _server: null,
+        ssl: {
+          _parent: {
+            reading: true,
+            onconnection: null,
+          },
+          _parentWrap: undefined,
+          _secureContext: {
+            context: {
+            },
+          },
+          reading: true,
+          onkeylog: function onkeylog(line) {
+            debug('onkeylog');
+            this[owner_symbol].emit('keylog', line);
+          },
+          onhandshakestart: function () { [native code] },
+          onhandshakedone: () => {
+            debug('client onhandshakedone');
+            this._finishInit();
+          },
+          onocspresponse: function onocspresponse(resp) {
+            debug('client onocspresponse');
+            this[owner_symbol].emit('OCSPResponse', resp);
+          },
+          onnewsession: function onnewsessionclient(sessionId, session) {
+            debug('client emit session');
+            const owner = this[owner_symbol];
+            if (owner[kIsVerified]) {
+              owner.emit('session', session);
+            } else {
+              owner[kPendingSession] = session;
+            }
+          },
+          onerror: function onerror(err) {
+            const owner = this[owner_symbol];
+            debug('%s onerror %s had? %j',
+                  (typeof owner._tlsOptions === 'object' && owner._tlsOptions !== null) ?
+                    owner._tlsOptions.isServer ? 'server' : 'client' :
+                    'unknown',
+                  err, owner._hadError);
+            
+            if (owner._hadError)
+              return;
+            
+            owner._hadError = true;
+            
+            // Destroy socket if error happened before handshake's finish
+            if (!owner._secureEstablished) {
+              // When handshake fails control is not yet released,
+              // so self._tlsError will return null instead of actual error
+            
+              // Set closing the socket after emitting an event since the socket needs to
+              // be accessible when the `tlsClientError` event is emitted.
+              owner._closeAfterHandlingError = true;
+              owner.destroy(err);
+            } else if (owner._tlsOptions?.isServer &&
+                       owner._rejectUnauthorized &&
+                       RegExpPrototypeExec(/peer did not return a certificate/,
+                                           err.message) !== null) {
+              // Ignore server's authorization errors
+              owner.destroy();
+            } else {
+              // Emit error
+              owner._emitTLSError(err);
+            }
+          },
+        },
+        _requestCert: true,
+        _rejectUnauthorized: true,
+        parser: null,
+        _httpMessage: [Circular],
+      },
+      _header: "GET /getPNRStatus/8124880126 HTTP/1.1\r\nAccept: application/json, text/plain, */*\r\nx-rapidapi-key: b72294afa3msh7382f0e6fd3b2acp146e49jsn9f3792d24b5b\r\nUser-Agent: axios/1.7.2\r\nAccept-Encoding: gzip, compress, deflate, br\r\nHost: irctc-indian-railway-pnr-status.p.rapidapi.com\r\nConnection: close\r\n\r\n",
+      _keepAliveTimeout: 0,
+      _onPendingData: () => {},
+      agent: {
+        _events: {
+          free: (socket, options) => {
+            const name = this.getName(options);
+            debug('agent.on(free)', name);
+            
+            // TODO(ronag): socket.destroy(err) might have been called
+            // before coming here and have an 'error' scheduled. In the
+            // case of socket.destroy() below this 'error' has no handler
+            // and could cause unhandled exception.
+            
+            if (!socket.writable) {
+              socket.destroy();
+              return;
+            }
+            
+            const requests = this.requests[name];
+            if (requests && requests.length) {
+              const req = ArrayPrototypeShift(requests);
+              const reqAsyncRes = req[kRequestAsyncResource];
+              if (reqAsyncRes) {
+                // Run request within the original async context.
+                reqAsyncRes.runInAsyncScope(() => {
+                  asyncResetHandle(socket);
+                  setRequestSocket(this, req, socket);
+                });
+                req[kRequestAsyncResource] = null;
+              } else {
+                setRequestSocket(this, req, socket);
+              }
+              if (requests.length === 0) {
+                delete this.requests[name];
+              }
+              return;
+            }
+            
+            // If there are no pending requests, then put it in
+            // the freeSockets pool, but only if we're allowed to do so.
+            const req = socket._httpMessage;
+            if (!req || !req.shouldKeepAlive || !this.keepAlive) {
+              socket.destroy();
+              return;
+            }
+            
+            const freeSockets = this.freeSockets[name] || [];
+            const freeLen = freeSockets.length;
+            let count = freeLen;
+            if (this.sockets[name])
+              count += this.sockets[name].length;
+            
+            if (this.totalSocketCount > this.maxTotalSockets ||
+                count > this.maxSockets ||
+                freeLen >= this.maxFreeSockets ||
+                !this.keepSocketAlive(socket)) {
+              socket.destroy();
+              return;
+            }
+            
+            this.freeSockets[name] = freeSockets;
+            socket[async_id_symbol] = -1;
+            socket._httpMessage = null;
+            this.removeSocket(socket, options);
+            
+            socket.once('error', freeSocketErrorListener);
+            ArrayPrototypePush(freeSockets, socket);
+          },
+          newListener: function maybeEnableKeylog(eventName) {
+            if (eventName === 'keylog') {
+              this.removeListener('newListener', maybeEnableKeylog);
+              // Future sockets will listen on keylog at creation.
+              const agent = this;
+              this[kOnKeylog] = function onkeylog(keylog) {
+                agent.emit('keylog', keylog, this);
+              };
+              // Existing sockets will start listening on keylog now.
+              const sockets = ObjectValues(this.sockets);
+              for (let i = 0; i < sockets.length; i++) {
+                sockets[i].on('keylog', this[kOnKeylog]);
+              }
+            }
+          },
+        },
+        _eventsCount: 2,
+        _maxListeners: undefined,
+        defaultPort: 443,
+        protocol: "https:",
+        options: {
+          noDelay: true,
+          path: null,
+        },
+        requests: {
+        },
+        sockets: {
+          "irctc-indian-railway-pnr-status.p.rapidapi.com:443:::::::::::::::::::::": [
+            {
+              _tlsOptions: {
+                allowHalfOpen: undefined,
+                pipe: false,
+                secureContext: {
+                  context: {
+                  },
+                },
+                isServer: false,
+                requestCert: true,
+                rejectUnauthorized: true,
+                session: undefined,
+                ALPNProtocols: undefined,
+                requestOCSP: undefined,
+                enableTrace: undefined,
+                pskCallback: undefined,
+                highWaterMark: undefined,
+                onread: undefined,
+                signal: undefined,
+              },
+              _secureEstablished: true,
+              _securePending: false,
+              _newSessionPending: false,
+              _controlReleased: true,
+              secureConnecting: false,
+              _SNICallback: null,
+              servername: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+              alpnProtocol: false,
+              authorized: true,
+              authorizationError: null,
+              encrypted: true,
+              _events: {
+                close: [
+                  function onSocketCloseDestroySSL() {
+                    // Make sure we are not doing it on OpenSSL's stack
+                    setImmediate(destroySSL, this);
+                    this[kRes] = null;
+                  },
+                  function () { [native code] },
+                  function onClose(err) {
+                    debug('CLIENT socket onClose');
+                    // This is the only place where sockets get removed from the Agent.
+                    // If you want to remove a socket from the pool, just close it.
+                    // All socket errors end in a close event anyway.
+                    agent.totalSocketCount--;
+                    agent.removeSocket(s, options);
+                  },
+                  function socketCloseListener() {
+                    const socket = this;
+                    const req = socket._httpMessage;
+                    debug('HTTP socket close');
+                    
+                    // NOTE: It's important to get parser here, because it could be freed by
+                    // the `socketOnData`.
+                    const parser = socket.parser;
+                    const res = req.res;
+                    
+                    req.destroyed = true;
+                    if (res) {
+                      // Socket closed before we emitted 'end' below.
+                      if (!res.complete) {
+                        res.destroy(connResetException('aborted'));
+                      }
+                      req._closed = true;
+                      req.emit('close');
+                      if (!res.aborted && res.readable) {
+                        res.push(null);
+                      }
+                    } else {
+                      if (!req.socket._hadError) {
+                        // This socket error fired before we started to
+                        // receive a response. The error needs to
+                        // fire on the request.
+                        req.socket._hadError = true;
+                        req.emit('error', connResetException('socket hang up'));
+                      }
+                      req._closed = true;
+                      req.emit('close');
+                    }
+                    
+                    // Too bad.  That output wasn't getting written.
+                    // This is pretty terrible that it doesn't raise an error.
+                    // Fixed better in v0.10
+                    if (req.outputData)
+                      req.outputData.length = 0;
+                    
+                    if (parser) {
+                      parser.finish();
+                      freeParser(parser, req, socket);
+                    }
+                  },
+                ],
+                end: function onReadableStreamEnd() {
+                  if (!this.allowHalfOpen) {
+                    this.write = writeAfterFIN;
+                  }
+                },
+                newListener: function keylogNewListener(event) {
+                  if (event !== 'keylog')
+                    return;
+                  
+                  // Guard against enableKeylogCallback after destroy
+                  if (!this._handle) return;
+                  this._handle.enableKeylogCallback();
+                  
+                  // Remove this listener since it's no longer needed.
+                  this.removeListener('newListener', keylogNewListener);
+                },
+                secure: function onConnectSecure() {
+                  const options = this[kConnectOptions];
+                  
+                  // Check the size of DHE parameter above minimum requirement
+                  // specified in options.
+                  const ekeyinfo = this.getEphemeralKeyInfo();
+                  if (ekeyinfo.type === 'DH' && ekeyinfo.size < options.minDHSize) {
+                    const err = new ERR_TLS_DH_PARAM_SIZE(ekeyinfo.size);
+                    debug('client emit:', err);
+                    this.emit('error', err);
+                    this.destroy();
+                    return;
+                  }
+                  
+                  let verifyError = this._handle.verifyError();
+                  
+                  // Verify that server's identity matches it's certificate's names
+                  // Unless server has resumed our existing session
+                  if (!verifyError && !this.isSessionReused()) {
+                    const hostname = options.servername ||
+                                   options.host ||
+                                   (options.socket && options.socket._host) ||
+                                   'localhost';
+                    const cert = this.getPeerCertificate(true);
+                    verifyError = options.checkServerIdentity(hostname, cert);
+                  }
+                  
+                  if (verifyError) {
+                    this.authorized = false;
+                    this.authorizationError = verifyError.code || verifyError.message;
+                  
+                    // rejectUnauthorized property can be explicitly defined as `undefined`
+                    // causing the assignment to default value (`true`) fail. Before assigning
+                    // it to the tlssock connection options, explicitly check if it is false
+                    // and update rejectUnauthorized property. The property gets used by
+                    // TLSSocket connection handler to allow or reject connection if
+                    // unauthorized.
+                    // This check is potentially redundant, however it is better to keep it
+                    // in case the option object gets modified somewhere.
+                    if (options.rejectUnauthorized !== false) {
+                      this.destroy(verifyError);
+                      return;
+                    }
+                    debug('client emit secureConnect. rejectUnauthorized: %s, ' +
+                          'authorizationError: %s', options.rejectUnauthorized,
+                          this.authorizationError);
+                    this.secureConnecting = false;
+                    this.emit('secureConnect');
+                  } else {
+                    this.authorized = true;
+                    debug('client emit secureConnect. authorized:', this.authorized);
+                    this.secureConnecting = false;
+                    this.emit('secureConnect');
+                  }
+                  
+                  this[kIsVerified] = true;
+                  const session = this[kPendingSession];
+                  this[kPendingSession] = null;
+                  if (session)
+                    this.emit('session', session);
+                  
+                  this.removeListener('end', onConnectEnd);
+                },
+                session: (session) => {
+                  this._cacheSession(options._agentKey, session);
+                },
+                free: function onFree() {
+                  debug('CLIENT socket onFree');
+                  agent.emit('free', s, options);
+                },
+                timeout: function onTimeout() {
+                  debug('CLIENT socket onTimeout');
+                  
+                  // Destroy if in free list.
+                  // TODO(ronag): Always destroy, even if not in free list.
+                  const sockets = agent.freeSockets;
+                  if (ArrayPrototypeSome(ObjectKeys(sockets), (name) =>
+                    ArrayPrototypeIncludes(sockets[name], s),
+                  )) {
+                    return s.destroy();
+                  }
+                },
+                agentRemove: function onRemove() {
+                  // We need this function for cases like HTTP 'upgrade'
+                  // (defined by WebSockets) where we need to remove a socket from the
+                  // pool because it'll be locked up indefinitely
+                  debug('CLIENT socket onRemove');
+                  agent.totalSocketCount--;
+                  agent.removeSocket(s, options);
+                  s.removeListener('close', onClose);
+                  s.removeListener('free', onFree);
+                  s.removeListener('timeout', onTimeout);
+                  s.removeListener('agentRemove', onRemove);
+                },
+                error: function socketErrorListener(err) {
+                  const socket = this;
+                  const req = socket._httpMessage;
+                  debug('SOCKET ERROR:', err.message, err.stack);
+                  
+                  if (req) {
+                    // For Safety. Some additional errors might fire later on
+                    // and we need to make sure we don't double-fire the error event.
+                    req.socket._hadError = true;
+                    req.emit('error', err);
+                  }
+                  
+                  const parser = socket.parser;
+                  if (parser) {
+                    parser.finish();
+                    freeParser(parser, req, socket);
+                  }
+                  
+                  // Ensure that no further data will come out of the socket
+                  socket.removeListener('data', socketOnData);
+                  socket.removeListener('end', socketOnEnd);
+                  socket.destroy();
+                },
+                finish: function () { [native code] },
+              },
+              _eventsCount: 10,
+              connecting: false,
+              _hadError: false,
+              _parent: null,
+              _host: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+              _closeAfterHandlingError: false,
+              _readableState: {
+                objectMode: false,
+                highWaterMark: 16384,
+                buffer: {
+                  head: null,
+                  tail: null,
+                  length: 0,
+                },
+                length: 0,
+                pipes: [
+                ],
+                flowing: true,
+                ended: false,
+                endEmitted: false,
+                reading: true,
+                constructed: true,
+                sync: false,
+                needReadable: true,
+                emittedReadable: false,
+                readableListening: false,
+                resumeScheduled: false,
+                errorEmitted: false,
+                emitClose: false,
+                autoDestroy: true,
+                destroyed: false,
+                errored: null,
+                closed: false,
+                closeEmitted: false,
+                defaultEncoding: "utf8",
+                awaitDrainWriters: null,
+                multiAwaitDrain: false,
+                readingMore: false,
+                dataEmitted: true,
+                decoder: null,
+                encoding: null,
+              },
+              _maxListeners: undefined,
+              _writableState: {
+                objectMode: false,
+                highWaterMark: 16384,
+                finalCalled: true,
+                needDrain: false,
+                ending: true,
+                ended: true,
+                finished: false,
+                destroyed: false,
+                decodeStrings: false,
+                defaultEncoding: "utf8",
+                length: 0,
+                writing: false,
+                corked: 0,
+                sync: false,
+                bufferProcessing: false,
+                onwrite: function () { [native code] },
+                writecb: null,
+                writelen: 0,
+                afterWriteTickInfo: null,
+                buffered: [
+                ],
+                bufferedIndex: 0,
+                allBuffers: true,
+                allNoop: true,
+                pendingcb: 1,
+                constructed: true,
+                prefinished: false,
+                errorEmitted: false,
+                emitClose: false,
+                autoDestroy: true,
+                errored: null,
+                closed: false,
+                closeEmitted: false,
+              },
+              allowHalfOpen: false,
+              _sockname: null,
+              _pendingData: null,
+              _pendingEncoding: "",
+              server: undefined,
+              _server: null,
+              ssl: {
+                _parent: {
+                  reading: true,
+                  onconnection: null,
+                },
+                _parentWrap: undefined,
+                _secureContext: {
+                  context: {
+                  },
+                },
+                reading: true,
+                onkeylog: function onkeylog(line) {
+                  debug('onkeylog');
+                  this[owner_symbol].emit('keylog', line);
+                },
+                onhandshakestart: function () { [native code] },
+                onhandshakedone: () => {
+                  debug('client onhandshakedone');
+                  this._finishInit();
+                },
+                onocspresponse: function onocspresponse(resp) {
+                  debug('client onocspresponse');
+                  this[owner_symbol].emit('OCSPResponse', resp);
+                },
+                onnewsession: function onnewsessionclient(sessionId, session) {
+                  debug('client emit session');
+                  const owner = this[owner_symbol];
+                  if (owner[kIsVerified]) {
+                    owner.emit('session', session);
+                  } else {
+                    owner[kPendingSession] = session;
+                  }
+                },
+                onerror: function onerror(err) {
+                  const owner = this[owner_symbol];
+                  debug('%s onerror %s had? %j',
+                        (typeof owner._tlsOptions === 'object' && owner._tlsOptions !== null) ?
+                          owner._tlsOptions.isServer ? 'server' : 'client' :
+                          'unknown',
+                        err, owner._hadError);
+                  
+                  if (owner._hadError)
+                    return;
+                  
+                  owner._hadError = true;
+                  
+                  // Destroy socket if error happened before handshake's finish
+                  if (!owner._secureEstablished) {
+                    // When handshake fails control is not yet released,
+                    // so self._tlsError will return null instead of actual error
+                  
+                    // Set closing the socket after emitting an event since the socket needs to
+                    // be accessible when the `tlsClientError` event is emitted.
+                    owner._closeAfterHandlingError = true;
+                    owner.destroy(err);
+                  } else if (owner._tlsOptions?.isServer &&
+                             owner._rejectUnauthorized &&
+                             RegExpPrototypeExec(/peer did not return a certificate/,
+                                                 err.message) !== null) {
+                    // Ignore server's authorization errors
+                    owner.destroy();
+                  } else {
+                    // Emit error
+                    owner._emitTLSError(err);
+                  }
+                },
+              },
+              _requestCert: true,
+              _rejectUnauthorized: true,
+              parser: null,
+              _httpMessage: [Circular],
+            },
+          ],
+        },
+        freeSockets: {
+        },
+        keepAliveMsecs: 1000,
+        keepAlive: false,
+        maxSockets: Infinity,
+        maxFreeSockets: 256,
+        scheduling: "lifo",
+        maxTotalSockets: Infinity,
+        totalSocketCount: 1,
+        maxCachedSessions: 100,
+        _sessionCache: {
+          map: {
+            "irctc-indian-railway-pnr-status.p.rapidapi.com:443:::::::::::::::::::::": new Uint8Array([48, 130, 7, 22, 2, 1, 1, 2, 2, 3, 3, 4, 2, 192, 47, 4, 32, 220, 208, 186, 178, 187, 48, 143, 75, 213, 44, 216, 226, 2, 164, 210, 144, 135, 214, 66, 248, 225, 238, 106, 4, 84, 42, 106, 103, 42, 201, 118, 25, 4, 48, 139, 12, 153, 80, 99, 68, 254, 242, 119, 115, 180, 13, 121, 235, 82, 198, 86, 15, 107, 159, 112, 83, 183, 125, 160, 171, 113, 33, 199, 78, 254, 82, 205, 132, 198, 127, 166, 214, 35, 171, 23, 125, 0, 174, 236, 65, 3, 134, 161, 6, 2, 4, 103, 28, 248, 124, 162, 4, 2, 2, 28, 32, 163, 130, 5, 206, 48, 130, 5, 202, 48, 130, 4, 178, 160, 3, 2, 1, 2, 2, 16, 13, 119, 178, 163, 107, 56, 14, 4, 14, 255, 1, 110, 145, 42, 89, 159, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 11, 5, 0, 48, 60, 49, 11, 48, 9, 6, 3, 85, 4, 6, 19, 2, 85, 83, 49, 15, 48, 13, 6, 3, 85, 4, 10, 19, 6, 65, 109, 97, 122, 111, 110, 49, 28, 48, 26, 6, 3, 85, 4, 3, 19, 19, 65, 109, 97, 122, 111, 110, 32, 82, 83, 65, 32, 50, 48, 52, 56, 32, 77, 48, 51, 48, 30, 23, 13, 50, 52, 48, 53, 48, 56, 48, 48, 48, 48, 48, 48, 90, 23, 13, 50, 53, 48, 54, 48, 54, 50, 51, 53, 57, 53, 57, 90, 48, 27, 49, 25, 48, 23, 6, 3, 85, 4, 3, 12, 16, 42, 46, 112, 46, 114, 97, 112, 105, 100, 97, 112, 105, 46, 99, 111, 109, 48, 130, 1, 34, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 1, 5, 0, 3, 130, 1, 15, 0, 48, 130, 1, 10, 2, 130, 1, 1, 0, 144, 13, 193, 52, 244, 54, 252, 38, 19, 207, 10, 186, 191, 1, 66, 20, 5, 228, 9, 97, 103, 51, 214, 175, 199, 139, 128, 194, 112, 10, 18, 29, 183, 194, 149, 130, 241, 253, 68, 245, 44, 5, 191, 123, 144, 138, 52, 226, 136, 70, 255, 220, 121, 84, 246, 82, 51, 204, 100, 108, 80, 213, 244, 111, 109, 202, 24, 54, 36, 55, 173, 144, 151, 20, 30, 37, 55, 53, 172, 22, 72, 154, 112, 36, 106, 96, 37, 120, 170, 212, 205, 99, 184, 176, 124, 226, 10, 99, 142, 222, 55, 210, 125, 73, 86, 14, 183, 209, 107, 57, 163, 185, 150, 209, 37, 210, 204, 196, 10, 99, 216, 25, 149, 4, 32, 5, 72, 137, 85, 187, 234, 75, 31, 143, 106, 231, 61, 83, 188, 11, 188, 226, 183, 159, 63, 108, 153, 163, 67, 200, 188, 82, 196, 175, 29, 255, 52, 109, 222, 157, 46, 33, 119, 231, 172, 175, 12, 83, 148, 178, 24, 18, 41, 189, 165, 102, 164, 29, 80, 216, 12, 158, 69, 214, 70, 20, 109, 177, 172, 93, 23, 152, 173, 157, 253, 184, 81, 139, 100, 16, 176, 87, 109, 92, 24, 44, 120, 51, 224, 209, 89, 224, 173, 209, 205, 97, 105, 149, 95, 196, 172, 210, 196, 1, 226, 169, 75, 183, 30, 128, 106, 223, 120, 49, 38, 145, 94, 150, 93, 63, 223, 9, 174, 79, 39, 163, 203, 129, 148, 129, 35, 253, 78, 235, 17, 35, 2, 3, 1, 0, 1, 163, 130, 2, 231, 48, 130, 2, 227, 48, 31, 6, 3, 85, 29, 35, 4, 24, 48, 22, 128, 20, 85, 217, 24, 95, 210, 28, 204, 1, 225, 88, 180, 190, 171, 217, 85, 66, 1, 215, 46, 2, 48, 29, 6, 3, 85, 29, 14, 4, 22, 4, 20, 203, 11, 149, 205, 91, 125, 120, 51, 153, 24, 38, 4, 173, 155, 90, 69, 110, 33, 248, 86, 48, 27, 6, 3, 85, 29, 17, 4, 20, 48, 18, 130, 16, 42, 46, 112, 46, 114, 97, 112, 105, 100, 97, 112, 105, 46, 99, 111, 109, 48, 19, 6, 3, 85, 29, 32, 4, 12, 48, 10, 48, 8, 6, 6, 103, 129, 12, 1, 2, 1, 48, 14, 6, 3, 85, 29, 15, 1, 1, 255, 4, 4, 3, 2, 5, 160, 48, 29, 6, 3, 85, 29, 37, 4, 22, 48, 20, 6, 8, 43, 6, 1, 5, 5, 7, 3, 1, 6, 8, 43, 6, 1, 5, 5, 7, 3, 2, 48, 59, 6, 3, 85, 29, 31, 4, 52, 48, 50, 48, 48, 160, 46, 160, 44, 134, 42, 104, 116, 116, 112, 58, 47, 47, 99, 114, 108, 46, 114, 50, 109, 48, 51, 46, 97, 109, 97, 122, 111, 110, 116, 114, 117, 115, 116, 46, 99, 111, 109, 47, 114, 50, 109, 48, 51, 46, 99, 114, 108, 48, 117, 6, 8, 43, 6, 1, 5, 5, 7, 1, 1, 4, 105, 48, 103, 48, 45, 6, 8, 43, 6, 1, 5, 5, 7, 48, 1, 134, 33, 104, 116, 116, 112, 58, 47, 47, 111, 99, 115, 112, 46, 114, 50, 109, 48, 51, 46, 97, 109, 97, 122, 111, 110, 116, 114, 117, 115, 116, 46, 99, 111, 109, 48, 54, 6, 8, 43, 6, 1, 5, 5, 7, 48, 2, 134, 42, 104, 116, 116, 112, 58, 47, 47, 99, 114, 116, 46, 114, 50, 109, 48, 51, 46, 97, 109, 97, 122, 111, 110, 116, 114, 117, 115, 116, 46, 99, 111, 109, 47, 114, 50, 109, 48, 51, 46, 99, 101, 114, 48, 12, 6, 3, 85, 29, 19, 1, 1, 255, 4, 2, 48, 0, 48, 130, 1, 124, 6, 10, 43, 6, 1, 4, 1, 214, 121, 2, 4, 2, 4, 130, 1, 108, 4, 130, 1, 104, 1, 102, 0, 117, 0, 207, 17, 86, 238, 213, 46, 124, 175, 243, 135, 91, 217, 105, 46, 155, 233, 26, 113, 103, 74, 176, 23, 236, 172, 1, 210, 91, 119, 206, 204, 59, 8, 0, 0, 1, 143, 85, 151, 2, 217, 0, 0, 4, 3, 0, 70, 48, 68, 2, 32, 114, 95, 254, 124, 235, 115, 188, 175, 178, 226, 165, 115, 36, 70, 209, 140, 42, 152, 80, 35, 250, 143, 142, 53, 93, 241, 27, 141, 178, 62, 142, 151, 2, 32, 48, 124, 14, 237, 124, 230, 166, 174, 190, 232, 51, 51, 69, 248, 93, 125, 252, 120, 78, 225, 253, 202, 180, 168, 166, 221, 185, 224, 132, 147, 165, 146, 0, 117, 0, 125, 89, 30, 18, 225, 120, 42, 123, 28, 97, 103, 124, 94, 253, 248, 208, 135, 92, 20, 160, 78, 149, 158, 185, 3, 47, 217, 14, 140, 46, 121, 184, 0, 0, 1, 143, 85, 151, 2, 153, 0, 0, 4, 3, 0, 70, 48, 68, 2, 32, 118, 219, 7, 214, 172, 235, 64, 244, 133, 221, 171, 23, 122, 87, 86, 70, 223, 193, 39, 20, 204, 239, 49, 70, 217, 235, 211, 211, 110, 101, 104, 74, 2, 32, 70, 39, 50, 124, 196, 245, 205, 67, 216, 237, 122, 196, 81, 120, 228, 192, 194, 3, 149, 147, 14, 197, 110, 20, 89, 177, 193, 188, 81, 132, 156, 104, 0, 118, 0, 230, 210, 49, 99, 64, 119, 140, 193, 16, 65, 6, 215, 113, 185, 206, 193, 210, 64, 246, 150, 132, 134, 251, 186, 135, 50, 29, 253, 30, 55, 142, 80, 0, 0, 1, 143, 85, 151, 2, 176, 0, 0, 4, 3, 0, 71, 48, 69, 2, 32, 95, 187, 8, 171, 45, 231, 251, 186, 1, 229, 2, 116, 47, 64, 226, 163, 181, 204, 195, 208, 233, 41, 59, 238, 172, 82, 10, 109, 239, 122, 239, 208, 2, 33, 0, 243, 39, 194, 112, 89, 219, 219, 211, 212, 120, 240, 2, 218, 218, 154, 237, 198, 153, 234, 162, 138, 196, 232, 244, 140, 52, 15, 102, 223, 5, 190, 217, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 11, 5, 0, 3, 130, 1, 1, 0, 75, 108, 167, 221, 234, 113, 73, 143, 229, 182, 112, 164, 123, 246, 177, 142, 27, 72, 133, 237, 242, 0, 130, 220, 155, 168, 92, 126, 25, 38, 67, 163, 183, 213, 145, 252, 43, 206, 255, 187, 180, 219, 198, 31, 67, 191, 51, 56, 248, 159, 65, 182, 102, 186, 219, 9, 138, 5, 117, 38, 58, 222, 32, 246, 32, 140, 47, 24, 148, 201, 164, 252, 18, 114, 91, 167, 142, 118, 148, 113, 131, 62, 195, 215, 42, 39, 184, 233, 58, 5, 126, 31, 46, 113, 241, 67, 213, 129, 223, 40, 96, 36, 133, 224, 89, 229, 194, 112, 150, 37, 5, 63, 74, 225, 109, 176, 212, 76, 124, 142, 182, 49, 81, 84, 157, 38, 226, 208, 53, 170, 42, 94, 192, 232, 52, 109, 140, 137, 173, 141, 93, 148, 75, 138, 15, 178, 177, 173, 135, 30, 218, 42, 219, 244, 218, 193, 253, 164, 93, 31, 193, 0, 162, 6, 230, 16, 79, 235, 130, 126, 172, 234, 180, 106, 26, 46, 65, 45, 23, 32, 110, 165, 87, 116, 36, 55, 14, 201, 190, 124, 243, 222, 140, 91, 159, 98, 30, 123, 194, 61, 97, 115, 197, 126, 194, 0, 31, 2, 122, 48, 21, 115, 252, 202, 149, 152, 150, 9, 8, 154, 36, 129, 228, 38, 38, 247, 107, 156, 45, 164, 56, 182, 96, 97, 37, 117, 216, 153, 82, 247, 232, 92, 106, 117, 151, 107, 221, 180, 11, 132, 233, 116, 181, 150, 241, 35, 164, 2, 4, 0, 166, 48, 4, 46, 105, 114, 99, 116, 99, 45, 105, 110, 100, 105, 97, 110, 45, 114, 97, 105, 108, 119, 97, 121, 45, 112, 110, 114, 45, 115, 116, 97, 116, 117, 115, 46, 112, 46, 114, 97, 112, 105, 100, 97, 112, 105, 46, 99, 111, 109, 169, 5, 2, 3, 1, 81, 128, 170, 129, 141, 4, 129, 138, 1, 248, 143, 89, 97, 252, 49, 50, 144, 207, 142, 143, 147, 184, 79, 187, 2, 58, 195, 237, 83, 63, 26, 105, 106, 5, 23, 2, 238, 134, 68, 79, 176, 83, 104, 181, 223, 203, 126, 83, 188, 183, 143, 80, 101, 10, 146, 244, 32, 180, 206, 33, 229, 64, 156, 40, 118, 77, 19, 25, 237, 252, 179, 162, 53, 83, 38, 39, 229, 226, 115, 89, 27, 193, 201, 62, 190, 235, 0, 54, 104, 199, 192, 115, 120, 177, 147, 198, 237, 186, 59, 138, 70, 106, 112, 163, 137, 210, 192, 160, 64, 189, 2, 199, 29, 88, 165, 236, 9, 70, 61, 30, 206, 88, 50, 108, 62, 140, 74, 153, 71, 18, 192, 79, 24, 92, 168, 111, 13, 125, 255, 175, 211, 252, 45, 49, 124, 60, 173, 3, 2, 1, 1, 179, 3, 2, 1, 23]),
+          },
+          list: [
+            "irctc-indian-railway-pnr-status.p.rapidapi.com:443:::::::::::::::::::::",
+          ],
+        },
+      },
+      socketPath: undefined,
+      method: "GET",
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: "/getPNRStatus/8124880126",
+      _ended: true,
+      res: {
+        _readableState: {
+          objectMode: false,
+          highWaterMark: 16384,
+          buffer: {
+            head: null,
+            tail: null,
+            length: 0,
+          },
+          length: 0,
+          pipes: [
+          ],
+          flowing: true,
+          ended: true,
+          endEmitted: true,
+          reading: false,
+          constructed: true,
+          sync: true,
+          needReadable: false,
+          emittedReadable: false,
+          readableListening: false,
+          resumeScheduled: false,
+          errorEmitted: false,
+          emitClose: true,
+          autoDestroy: true,
+          destroyed: true,
+          errored: null,
+          closed: true,
+          closeEmitted: true,
+          defaultEncoding: "utf8",
+          awaitDrainWriters: null,
+          multiAwaitDrain: false,
+          readingMore: true,
+          dataEmitted: true,
+          decoder: null,
+          encoding: null,
+        },
+        _events: {
+          end: [
+            function responseOnEnd() {
+              const req = this.req;
+              const socket = req.socket;
+              
+              if (socket) {
+                if (req.timeoutCb) socket.removeListener('timeout', emitRequestTimeout);
+                socket.removeListener('timeout', responseOnTimeout);
+              }
+              
+              req._ended = true;
+              
+              if (!req.shouldKeepAlive) {
+                if (socket.writable) {
+                  debug('AGENT socket.destroySoon()');
+                  if (typeof socket.destroySoon === 'function')
+                    socket.destroySoon();
+                  else
+                    socket.end();
+                }
+                assert(!socket.writable);
+              } else if (req.writableFinished && !this.aborted) {
+                assert(req.finished);
+                // We can assume `req.finished` means all data has been written since:
+                // - `'responseOnEnd'` means we have been assigned a socket.
+                // - when we have a socket we write directly to it without buffering.
+                // - `req.finished` means `end()` has been called and no further data.
+                //   can be written
+                // In addition, `req.writableFinished` means all data written has been
+                // accepted by the kernel. (i.e. the `req.socket` is drained).Without
+                // this constraint, we may assign a non drained socket to a request.
+                responseKeepAlive(req);
+              }
+            },
+            function handleStreamEnd() {
+              try {
+                let responseData = responseBuffer.length === 1 ? responseBuffer[0] : Buffer.concat(responseBuffer);
+                if (responseType !== 'arraybuffer') {
+                  responseData = responseData.toString(responseEncoding);
+                  if (!responseEncoding || responseEncoding === 'utf8') {
+                    responseData = utils$1.stripBOM(responseData);
+                  }
+                }
+                response.data = responseData;
+              } catch (err) {
+                return reject(AxiosError.from(err, null, config, response.request, response));
+              }
+              settle(resolve, reject, response);
+            },
+          ],
+          error: function handleStreamError(err) {
+            if (req.destroyed) return;
+            reject(AxiosError.from(err, null, config, lastRequest));
+          },
+          data: function handleStreamData(chunk) {
+            responseBuffer.push(chunk);
+            totalResponseBytes += chunk.length;
+            
+            // make sure the content length is not over the maxContentLength if specified
+            if (config.maxContentLength > -1 && totalResponseBytes > config.maxContentLength) {
+              // stream.destroy() emit aborted event before calling reject() on Node.js v16
+              rejected = true;
+              responseStream.destroy();
+              reject(new AxiosError('maxContentLength size of ' + config.maxContentLength + ' exceeded',
+                AxiosError.ERR_BAD_RESPONSE, config, lastRequest));
+            }
+          },
+          aborted: function handlerStreamAborted() {
+            if (rejected) {
+              return;
+            }
+            
+            const err = new AxiosError(
+              'maxContentLength size of ' + config.maxContentLength + ' exceeded',
+              AxiosError.ERR_BAD_RESPONSE,
+              config,
+              lastRequest
+            );
+            responseStream.destroy(err);
+            reject(err);
+          },
+        },
+        _eventsCount: 4,
+        _maxListeners: undefined,
+        socket: {
+          _tlsOptions: {
+            allowHalfOpen: undefined,
+            pipe: false,
+            secureContext: {
+              context: {
+              },
+            },
+            isServer: false,
+            requestCert: true,
+            rejectUnauthorized: true,
+            session: undefined,
+            ALPNProtocols: undefined,
+            requestOCSP: undefined,
+            enableTrace: undefined,
+            pskCallback: undefined,
+            highWaterMark: undefined,
+            onread: undefined,
+            signal: undefined,
+          },
+          _secureEstablished: true,
+          _securePending: false,
+          _newSessionPending: false,
+          _controlReleased: true,
+          secureConnecting: false,
+          _SNICallback: null,
+          servername: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+          alpnProtocol: false,
+          authorized: true,
+          authorizationError: null,
+          encrypted: true,
+          _events: {
+            close: [
+              function onSocketCloseDestroySSL() {
+                // Make sure we are not doing it on OpenSSL's stack
+                setImmediate(destroySSL, this);
+                this[kRes] = null;
+              },
+              function () { [native code] },
+              function onClose(err) {
+                debug('CLIENT socket onClose');
+                // This is the only place where sockets get removed from the Agent.
+                // If you want to remove a socket from the pool, just close it.
+                // All socket errors end in a close event anyway.
+                agent.totalSocketCount--;
+                agent.removeSocket(s, options);
+              },
+              function socketCloseListener() {
+                const socket = this;
+                const req = socket._httpMessage;
+                debug('HTTP socket close');
+                
+                // NOTE: It's important to get parser here, because it could be freed by
+                // the `socketOnData`.
+                const parser = socket.parser;
+                const res = req.res;
+                
+                req.destroyed = true;
+                if (res) {
+                  // Socket closed before we emitted 'end' below.
+                  if (!res.complete) {
+                    res.destroy(connResetException('aborted'));
+                  }
+                  req._closed = true;
+                  req.emit('close');
+                  if (!res.aborted && res.readable) {
+                    res.push(null);
+                  }
+                } else {
+                  if (!req.socket._hadError) {
+                    // This socket error fired before we started to
+                    // receive a response. The error needs to
+                    // fire on the request.
+                    req.socket._hadError = true;
+                    req.emit('error', connResetException('socket hang up'));
+                  }
+                  req._closed = true;
+                  req.emit('close');
+                }
+                
+                // Too bad.  That output wasn't getting written.
+                // This is pretty terrible that it doesn't raise an error.
+                // Fixed better in v0.10
+                if (req.outputData)
+                  req.outputData.length = 0;
+                
+                if (parser) {
+                  parser.finish();
+                  freeParser(parser, req, socket);
+                }
+              },
+            ],
+            end: function onReadableStreamEnd() {
+              if (!this.allowHalfOpen) {
+                this.write = writeAfterFIN;
+              }
+            },
+            newListener: function keylogNewListener(event) {
+              if (event !== 'keylog')
+                return;
+              
+              // Guard against enableKeylogCallback after destroy
+              if (!this._handle) return;
+              this._handle.enableKeylogCallback();
+              
+              // Remove this listener since it's no longer needed.
+              this.removeListener('newListener', keylogNewListener);
+            },
+            secure: function onConnectSecure() {
+              const options = this[kConnectOptions];
+              
+              // Check the size of DHE parameter above minimum requirement
+              // specified in options.
+              const ekeyinfo = this.getEphemeralKeyInfo();
+              if (ekeyinfo.type === 'DH' && ekeyinfo.size < options.minDHSize) {
+                const err = new ERR_TLS_DH_PARAM_SIZE(ekeyinfo.size);
+                debug('client emit:', err);
+                this.emit('error', err);
+                this.destroy();
+                return;
+              }
+              
+              let verifyError = this._handle.verifyError();
+              
+              // Verify that server's identity matches it's certificate's names
+              // Unless server has resumed our existing session
+              if (!verifyError && !this.isSessionReused()) {
+                const hostname = options.servername ||
+                               options.host ||
+                               (options.socket && options.socket._host) ||
+                               'localhost';
+                const cert = this.getPeerCertificate(true);
+                verifyError = options.checkServerIdentity(hostname, cert);
+              }
+              
+              if (verifyError) {
+                this.authorized = false;
+                this.authorizationError = verifyError.code || verifyError.message;
+              
+                // rejectUnauthorized property can be explicitly defined as `undefined`
+                // causing the assignment to default value (`true`) fail. Before assigning
+                // it to the tlssock connection options, explicitly check if it is false
+                // and update rejectUnauthorized property. The property gets used by
+                // TLSSocket connection handler to allow or reject connection if
+                // unauthorized.
+                // This check is potentially redundant, however it is better to keep it
+                // in case the option object gets modified somewhere.
+                if (options.rejectUnauthorized !== false) {
+                  this.destroy(verifyError);
+                  return;
+                }
+                debug('client emit secureConnect. rejectUnauthorized: %s, ' +
+                      'authorizationError: %s', options.rejectUnauthorized,
+                      this.authorizationError);
+                this.secureConnecting = false;
+                this.emit('secureConnect');
+              } else {
+                this.authorized = true;
+                debug('client emit secureConnect. authorized:', this.authorized);
+                this.secureConnecting = false;
+                this.emit('secureConnect');
+              }
+              
+              this[kIsVerified] = true;
+              const session = this[kPendingSession];
+              this[kPendingSession] = null;
+              if (session)
+                this.emit('session', session);
+              
+              this.removeListener('end', onConnectEnd);
+            },
+            session: (session) => {
+              this._cacheSession(options._agentKey, session);
+            },
+            free: function onFree() {
+              debug('CLIENT socket onFree');
+              agent.emit('free', s, options);
+            },
+            timeout: function onTimeout() {
+              debug('CLIENT socket onTimeout');
+              
+              // Destroy if in free list.
+              // TODO(ronag): Always destroy, even if not in free list.
+              const sockets = agent.freeSockets;
+              if (ArrayPrototypeSome(ObjectKeys(sockets), (name) =>
+                ArrayPrototypeIncludes(sockets[name], s),
+              )) {
+                return s.destroy();
+              }
+            },
+            agentRemove: function onRemove() {
+              // We need this function for cases like HTTP 'upgrade'
+              // (defined by WebSockets) where we need to remove a socket from the
+              // pool because it'll be locked up indefinitely
+              debug('CLIENT socket onRemove');
+              agent.totalSocketCount--;
+              agent.removeSocket(s, options);
+              s.removeListener('close', onClose);
+              s.removeListener('free', onFree);
+              s.removeListener('timeout', onTimeout);
+              s.removeListener('agentRemove', onRemove);
+            },
+            error: function socketErrorListener(err) {
+              const socket = this;
+              const req = socket._httpMessage;
+              debug('SOCKET ERROR:', err.message, err.stack);
+              
+              if (req) {
+                // For Safety. Some additional errors might fire later on
+                // and we need to make sure we don't double-fire the error event.
+                req.socket._hadError = true;
+                req.emit('error', err);
+              }
+              
+              const parser = socket.parser;
+              if (parser) {
+                parser.finish();
+                freeParser(parser, req, socket);
+              }
+              
+              // Ensure that no further data will come out of the socket
+              socket.removeListener('data', socketOnData);
+              socket.removeListener('end', socketOnEnd);
+              socket.destroy();
+            },
+            finish: function () { [native code] },
+          },
+          _eventsCount: 10,
+          connecting: false,
+          _hadError: false,
+          _parent: null,
+          _host: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+          _closeAfterHandlingError: false,
+          _readableState: {
+            objectMode: false,
+            highWaterMark: 16384,
+            buffer: {
+              head: null,
+              tail: null,
+              length: 0,
+            },
+            length: 0,
+            pipes: [
+            ],
+            flowing: true,
+            ended: false,
+            endEmitted: false,
+            reading: true,
+            constructed: true,
+            sync: false,
+            needReadable: true,
+            emittedReadable: false,
+            readableListening: false,
+            resumeScheduled: false,
+            errorEmitted: false,
+            emitClose: false,
+            autoDestroy: true,
+            destroyed: false,
+            errored: null,
+            closed: false,
+            closeEmitted: false,
+            defaultEncoding: "utf8",
+            awaitDrainWriters: null,
+            multiAwaitDrain: false,
+            readingMore: false,
+            dataEmitted: true,
+            decoder: null,
+            encoding: null,
+          },
+          _maxListeners: undefined,
+          _writableState: {
+            objectMode: false,
+            highWaterMark: 16384,
+            finalCalled: true,
+            needDrain: false,
+            ending: true,
+            ended: true,
+            finished: false,
+            destroyed: false,
+            decodeStrings: false,
+            defaultEncoding: "utf8",
+            length: 0,
+            writing: false,
+            corked: 0,
+            sync: false,
+            bufferProcessing: false,
+            onwrite: function () { [native code] },
+            writecb: null,
+            writelen: 0,
+            afterWriteTickInfo: null,
+            buffered: [
+            ],
+            bufferedIndex: 0,
+            allBuffers: true,
+            allNoop: true,
+            pendingcb: 1,
+            constructed: true,
+            prefinished: false,
+            errorEmitted: false,
+            emitClose: false,
+            autoDestroy: true,
+            errored: null,
+            closed: false,
+            closeEmitted: false,
+          },
+          allowHalfOpen: false,
+          _sockname: null,
+          _pendingData: null,
+          _pendingEncoding: "",
+          server: undefined,
+          _server: null,
+          ssl: {
+            _parent: {
+              reading: true,
+              onconnection: null,
+            },
+            _parentWrap: undefined,
+            _secureContext: {
+              context: {
+              },
+            },
+            reading: true,
+            onkeylog: function onkeylog(line) {
+              debug('onkeylog');
+              this[owner_symbol].emit('keylog', line);
+            },
+            onhandshakestart: function () { [native code] },
+            onhandshakedone: () => {
+              debug('client onhandshakedone');
+              this._finishInit();
+            },
+            onocspresponse: function onocspresponse(resp) {
+              debug('client onocspresponse');
+              this[owner_symbol].emit('OCSPResponse', resp);
+            },
+            onnewsession: function onnewsessionclient(sessionId, session) {
+              debug('client emit session');
+              const owner = this[owner_symbol];
+              if (owner[kIsVerified]) {
+                owner.emit('session', session);
+              } else {
+                owner[kPendingSession] = session;
+              }
+            },
+            onerror: function onerror(err) {
+              const owner = this[owner_symbol];
+              debug('%s onerror %s had? %j',
+                    (typeof owner._tlsOptions === 'object' && owner._tlsOptions !== null) ?
+                      owner._tlsOptions.isServer ? 'server' : 'client' :
+                      'unknown',
+                    err, owner._hadError);
+              
+              if (owner._hadError)
+                return;
+              
+              owner._hadError = true;
+              
+              // Destroy socket if error happened before handshake's finish
+              if (!owner._secureEstablished) {
+                // When handshake fails control is not yet released,
+                // so self._tlsError will return null instead of actual error
+              
+                // Set closing the socket after emitting an event since the socket needs to
+                // be accessible when the `tlsClientError` event is emitted.
+                owner._closeAfterHandlingError = true;
+                owner.destroy(err);
+              } else if (owner._tlsOptions?.isServer &&
+                         owner._rejectUnauthorized &&
+                         RegExpPrototypeExec(/peer did not return a certificate/,
+                                             err.message) !== null) {
+                // Ignore server's authorization errors
+                owner.destroy();
+              } else {
+                // Emit error
+                owner._emitTLSError(err);
+              }
+            },
+          },
+          _requestCert: true,
+          _rejectUnauthorized: true,
+          parser: null,
+          _httpMessage: [Circular],
+        },
+        httpVersionMajor: 1,
+        httpVersionMinor: 1,
+        httpVersion: "1.1",
+        complete: true,
+        rawHeaders: [
+          "Date",
+          "Sat, 26 Oct 2024 14:11:09 GMT",
+          "Content-Type",
+          "application/json; charset=utf-8",
+          "Content-Length",
+          "2199",
+          "Connection",
+          "close",
+          "ETag",
+          "W/\"897-G0r8k9hFas0+SkgH27L/Dv7AG54\"",
+          "X-Powered-By",
+          "Express",
+          "X-RateLimit-Requests-Limit",
+          "40",
+          "X-RateLimit-Requests-Remaining",
+          "35",
+          "X-RateLimit-Requests-Reset",
+          "69258",
+          "X-RateLimit-rapid-free-plans-hard-limit-Limit",
+          "500000",
+          "X-RateLimit-rapid-free-plans-hard-limit-Remaining",
+          "499995",
+          "X-RateLimit-rapid-free-plans-hard-limit-Reset",
+          "2661258",
+          "Server",
+          "RapidAPI-1.2.8",
+          "X-RapidAPI-Version",
+          "1.2.8",
+          "X-RapidAPI-Region",
+          "AWS - ap-southeast-1",
+          "X-RapidAPI-Request-Id",
+          "72c47a9bf8e8888babefe5421dde8c5f842ae25c4e4cf93c32531876b612c741",
+        ],
+        rawTrailers: [
+        ],
+        joinDuplicateHeaders: undefined,
+        aborted: false,
+        upgrade: false,
+        url: "",
+        method: null,
+        statusCode: 200,
+        statusMessage: "OK",
+        client: {
+          _tlsOptions: {
+            allowHalfOpen: undefined,
+            pipe: false,
+            secureContext: {
+              context: {
+              },
+            },
+            isServer: false,
+            requestCert: true,
+            rejectUnauthorized: true,
+            session: undefined,
+            ALPNProtocols: undefined,
+            requestOCSP: undefined,
+            enableTrace: undefined,
+            pskCallback: undefined,
+            highWaterMark: undefined,
+            onread: undefined,
+            signal: undefined,
+          },
+          _secureEstablished: true,
+          _securePending: false,
+          _newSessionPending: false,
+          _controlReleased: true,
+          secureConnecting: false,
+          _SNICallback: null,
+          servername: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+          alpnProtocol: false,
+          authorized: true,
+          authorizationError: null,
+          encrypted: true,
+          _events: {
+            close: [
+              function onSocketCloseDestroySSL() {
+                // Make sure we are not doing it on OpenSSL's stack
+                setImmediate(destroySSL, this);
+                this[kRes] = null;
+              },
+              function () { [native code] },
+              function onClose(err) {
+                debug('CLIENT socket onClose');
+                // This is the only place where sockets get removed from the Agent.
+                // If you want to remove a socket from the pool, just close it.
+                // All socket errors end in a close event anyway.
+                agent.totalSocketCount--;
+                agent.removeSocket(s, options);
+              },
+              function socketCloseListener() {
+                const socket = this;
+                const req = socket._httpMessage;
+                debug('HTTP socket close');
+                
+                // NOTE: It's important to get parser here, because it could be freed by
+                // the `socketOnData`.
+                const parser = socket.parser;
+                const res = req.res;
+                
+                req.destroyed = true;
+                if (res) {
+                  // Socket closed before we emitted 'end' below.
+                  if (!res.complete) {
+                    res.destroy(connResetException('aborted'));
+                  }
+                  req._closed = true;
+                  req.emit('close');
+                  if (!res.aborted && res.readable) {
+                    res.push(null);
+                  }
+                } else {
+                  if (!req.socket._hadError) {
+                    // This socket error fired before we started to
+                    // receive a response. The error needs to
+                    // fire on the request.
+                    req.socket._hadError = true;
+                    req.emit('error', connResetException('socket hang up'));
+                  }
+                  req._closed = true;
+                  req.emit('close');
+                }
+                
+                // Too bad.  That output wasn't getting written.
+                // This is pretty terrible that it doesn't raise an error.
+                // Fixed better in v0.10
+                if (req.outputData)
+                  req.outputData.length = 0;
+                
+                if (parser) {
+                  parser.finish();
+                  freeParser(parser, req, socket);
+                }
+              },
+            ],
+            end: function onReadableStreamEnd() {
+              if (!this.allowHalfOpen) {
+                this.write = writeAfterFIN;
+              }
+            },
+            newListener: function keylogNewListener(event) {
+              if (event !== 'keylog')
+                return;
+              
+              // Guard against enableKeylogCallback after destroy
+              if (!this._handle) return;
+              this._handle.enableKeylogCallback();
+              
+              // Remove this listener since it's no longer needed.
+              this.removeListener('newListener', keylogNewListener);
+            },
+            secure: function onConnectSecure() {
+              const options = this[kConnectOptions];
+              
+              // Check the size of DHE parameter above minimum requirement
+              // specified in options.
+              const ekeyinfo = this.getEphemeralKeyInfo();
+              if (ekeyinfo.type === 'DH' && ekeyinfo.size < options.minDHSize) {
+                const err = new ERR_TLS_DH_PARAM_SIZE(ekeyinfo.size);
+                debug('client emit:', err);
+                this.emit('error', err);
+                this.destroy();
+                return;
+              }
+              
+              let verifyError = this._handle.verifyError();
+              
+              // Verify that server's identity matches it's certificate's names
+              // Unless server has resumed our existing session
+              if (!verifyError && !this.isSessionReused()) {
+                const hostname = options.servername ||
+                               options.host ||
+                               (options.socket && options.socket._host) ||
+                               'localhost';
+                const cert = this.getPeerCertificate(true);
+                verifyError = options.checkServerIdentity(hostname, cert);
+              }
+              
+              if (verifyError) {
+                this.authorized = false;
+                this.authorizationError = verifyError.code || verifyError.message;
+              
+                // rejectUnauthorized property can be explicitly defined as `undefined`
+                // causing the assignment to default value (`true`) fail. Before assigning
+                // it to the tlssock connection options, explicitly check if it is false
+                // and update rejectUnauthorized property. The property gets used by
+                // TLSSocket connection handler to allow or reject connection if
+                // unauthorized.
+                // This check is potentially redundant, however it is better to keep it
+                // in case the option object gets modified somewhere.
+                if (options.rejectUnauthorized !== false) {
+                  this.destroy(verifyError);
+                  return;
+                }
+                debug('client emit secureConnect. rejectUnauthorized: %s, ' +
+                      'authorizationError: %s', options.rejectUnauthorized,
+                      this.authorizationError);
+                this.secureConnecting = false;
+                this.emit('secureConnect');
+              } else {
+                this.authorized = true;
+                debug('client emit secureConnect. authorized:', this.authorized);
+                this.secureConnecting = false;
+                this.emit('secureConnect');
+              }
+              
+              this[kIsVerified] = true;
+              const session = this[kPendingSession];
+              this[kPendingSession] = null;
+              if (session)
+                this.emit('session', session);
+              
+              this.removeListener('end', onConnectEnd);
+            },
+            session: (session) => {
+              this._cacheSession(options._agentKey, session);
+            },
+            free: function onFree() {
+              debug('CLIENT socket onFree');
+              agent.emit('free', s, options);
+            },
+            timeout: function onTimeout() {
+              debug('CLIENT socket onTimeout');
+              
+              // Destroy if in free list.
+              // TODO(ronag): Always destroy, even if not in free list.
+              const sockets = agent.freeSockets;
+              if (ArrayPrototypeSome(ObjectKeys(sockets), (name) =>
+                ArrayPrototypeIncludes(sockets[name], s),
+              )) {
+                return s.destroy();
+              }
+            },
+            agentRemove: function onRemove() {
+              // We need this function for cases like HTTP 'upgrade'
+              // (defined by WebSockets) where we need to remove a socket from the
+              // pool because it'll be locked up indefinitely
+              debug('CLIENT socket onRemove');
+              agent.totalSocketCount--;
+              agent.removeSocket(s, options);
+              s.removeListener('close', onClose);
+              s.removeListener('free', onFree);
+              s.removeListener('timeout', onTimeout);
+              s.removeListener('agentRemove', onRemove);
+            },
+            error: function socketErrorListener(err) {
+              const socket = this;
+              const req = socket._httpMessage;
+              debug('SOCKET ERROR:', err.message, err.stack);
+              
+              if (req) {
+                // For Safety. Some additional errors might fire later on
+                // and we need to make sure we don't double-fire the error event.
+                req.socket._hadError = true;
+                req.emit('error', err);
+              }
+              
+              const parser = socket.parser;
+              if (parser) {
+                parser.finish();
+                freeParser(parser, req, socket);
+              }
+              
+              // Ensure that no further data will come out of the socket
+              socket.removeListener('data', socketOnData);
+              socket.removeListener('end', socketOnEnd);
+              socket.destroy();
+            },
+            finish: function () { [native code] },
+          },
+          _eventsCount: 10,
+          connecting: false,
+          _hadError: false,
+          _parent: null,
+          _host: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+          _closeAfterHandlingError: false,
+          _readableState: {
+            objectMode: false,
+            highWaterMark: 16384,
+            buffer: {
+              head: null,
+              tail: null,
+              length: 0,
+            },
+            length: 0,
+            pipes: [
+            ],
+            flowing: true,
+            ended: false,
+            endEmitted: false,
+            reading: true,
+            constructed: true,
+            sync: false,
+            needReadable: true,
+            emittedReadable: false,
+            readableListening: false,
+            resumeScheduled: false,
+            errorEmitted: false,
+            emitClose: false,
+            autoDestroy: true,
+            destroyed: false,
+            errored: null,
+            closed: false,
+            closeEmitted: false,
+            defaultEncoding: "utf8",
+            awaitDrainWriters: null,
+            multiAwaitDrain: false,
+            readingMore: false,
+            dataEmitted: true,
+            decoder: null,
+            encoding: null,
+          },
+          _maxListeners: undefined,
+          _writableState: {
+            objectMode: false,
+            highWaterMark: 16384,
+            finalCalled: true,
+            needDrain: false,
+            ending: true,
+            ended: true,
+            finished: false,
+            destroyed: false,
+            decodeStrings: false,
+            defaultEncoding: "utf8",
+            length: 0,
+            writing: false,
+            corked: 0,
+            sync: false,
+            bufferProcessing: false,
+            onwrite: function () { [native code] },
+            writecb: null,
+            writelen: 0,
+            afterWriteTickInfo: null,
+            buffered: [
+            ],
+            bufferedIndex: 0,
+            allBuffers: true,
+            allNoop: true,
+            pendingcb: 1,
+            constructed: true,
+            prefinished: false,
+            errorEmitted: false,
+            emitClose: false,
+            autoDestroy: true,
+            errored: null,
+            closed: false,
+            closeEmitted: false,
+          },
+          allowHalfOpen: false,
+          _sockname: null,
+          _pendingData: null,
+          _pendingEncoding: "",
+          server: undefined,
+          _server: null,
+          ssl: {
+            _parent: {
+              reading: true,
+              onconnection: null,
+            },
+            _parentWrap: undefined,
+            _secureContext: {
+              context: {
+              },
+            },
+            reading: true,
+            onkeylog: function onkeylog(line) {
+              debug('onkeylog');
+              this[owner_symbol].emit('keylog', line);
+            },
+            onhandshakestart: function () { [native code] },
+            onhandshakedone: () => {
+              debug('client onhandshakedone');
+              this._finishInit();
+            },
+            onocspresponse: function onocspresponse(resp) {
+              debug('client onocspresponse');
+              this[owner_symbol].emit('OCSPResponse', resp);
+            },
+            onnewsession: function onnewsessionclient(sessionId, session) {
+              debug('client emit session');
+              const owner = this[owner_symbol];
+              if (owner[kIsVerified]) {
+                owner.emit('session', session);
+              } else {
+                owner[kPendingSession] = session;
+              }
+            },
+            onerror: function onerror(err) {
+              const owner = this[owner_symbol];
+              debug('%s onerror %s had? %j',
+                    (typeof owner._tlsOptions === 'object' && owner._tlsOptions !== null) ?
+                      owner._tlsOptions.isServer ? 'server' : 'client' :
+                      'unknown',
+                    err, owner._hadError);
+              
+              if (owner._hadError)
+                return;
+              
+              owner._hadError = true;
+              
+              // Destroy socket if error happened before handshake's finish
+              if (!owner._secureEstablished) {
+                // When handshake fails control is not yet released,
+                // so self._tlsError will return null instead of actual error
+              
+                // Set closing the socket after emitting an event since the socket needs to
+                // be accessible when the `tlsClientError` event is emitted.
+                owner._closeAfterHandlingError = true;
+                owner.destroy(err);
+              } else if (owner._tlsOptions?.isServer &&
+                         owner._rejectUnauthorized &&
+                         RegExpPrototypeExec(/peer did not return a certificate/,
+                                             err.message) !== null) {
+                // Ignore server's authorization errors
+                owner.destroy();
+              } else {
+                // Emit error
+                owner._emitTLSError(err);
+              }
+            },
+          },
+          _requestCert: true,
+          _rejectUnauthorized: true,
+          parser: null,
+          _httpMessage: [Circular],
+        },
+        _consuming: false,
+        _dumped: false,
+        req: [Circular],
+        responseUrl: "https://irctc-indian-railway-pnr-status.p.rapidapi.com/getPNRStatus/8124880126",
+        redirects: [
+        ],
+      },
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+      protocol: "https:",
+      _redirectable: {
+        _writableState: {
+          objectMode: false,
+          highWaterMark: 16384,
+          finalCalled: false,
+          needDrain: false,
+          ending: false,
+          ended: false,
+          finished: false,
+          destroyed: false,
+          decodeStrings: true,
+          defaultEncoding: "utf8",
+          length: 0,
+          writing: false,
+          corked: 0,
+          sync: true,
+          bufferProcessing: false,
+          onwrite: function () { [native code] },
+          writecb: null,
+          writelen: 0,
+          afterWriteTickInfo: null,
+          buffered: [
+          ],
+          bufferedIndex: 0,
+          allBuffers: true,
+          allNoop: true,
+          pendingcb: 0,
+          constructed: true,
+          prefinished: false,
+          errorEmitted: false,
+          emitClose: true,
+          autoDestroy: true,
+          errored: null,
+          closed: false,
+          closeEmitted: false,
+        },
+        _events: {
+          response: function handleResponse(res) {
+            if (req.destroyed) return;
+            
+            const streams = [res];
+            
+            const responseLength = +res.headers['content-length'];
+            
+            if (onDownloadProgress) {
+              const transformStream = new AxiosTransformStream$1({
+                length: utils$1.toFiniteNumber(responseLength),
+                maxRate: utils$1.toFiniteNumber(maxDownloadRate)
+              });
+            
+              onDownloadProgress && transformStream.on('progress', progress => {
+                onDownloadProgress(Object.assign(progress, {
+                  download: true
+                }));
+              });
+            
+              streams.push(transformStream);
+            }
+            
+            // decompress the response body transparently if required
+            let responseStream = res;
+            
+            // return the last request in case of redirects
+            const lastRequest = res.req || req;
+            
+            // if decompress disabled we should not decompress
+            if (config.decompress !== false && res.headers['content-encoding']) {
+              // if no content, but headers still say that it is encoded,
+              // remove the header not confuse downstream operations
+              if (method === 'HEAD' || res.statusCode === 204) {
+                delete res.headers['content-encoding'];
+              }
+            
+              switch ((res.headers['content-encoding'] || '').toLowerCase()) {
+              /*eslint default-case:0*/
+              case 'gzip':
+              case 'x-gzip':
+              case 'compress':
+              case 'x-compress':
+                // add the unzipper to the body stream processing pipeline
+                streams.push(zlib__default["default"].createUnzip(zlibOptions));
+            
+                // remove the content-encoding in order to not confuse downstream operations
+                delete res.headers['content-encoding'];
+                break;
+              case 'deflate':
+                streams.push(new ZlibHeaderTransformStream$1());
+            
+                // add the unzipper to the body stream processing pipeline
+                streams.push(zlib__default["default"].createUnzip(zlibOptions));
+            
+                // remove the content-encoding in order to not confuse downstream operations
+                delete res.headers['content-encoding'];
+                break;
+              case 'br':
+                if (isBrotliSupported) {
+                  streams.push(zlib__default["default"].createBrotliDecompress(brotliOptions));
+                  delete res.headers['content-encoding'];
+                }
+              }
+            }
+            
+            responseStream = streams.length > 1 ? stream__default["default"].pipeline(streams, utils$1.noop) : streams[0];
+            
+            const offListeners = stream__default["default"].finished(responseStream, () => {
+              offListeners();
+              onFinished();
+            });
+            
+            const response = {
+              status: res.statusCode,
+              statusText: res.statusMessage,
+              headers: new AxiosHeaders$1(res.headers),
+              config,
+              request: lastRequest
+            };
+            
+            if (responseType === 'stream') {
+              response.data = responseStream;
+              settle(resolve, reject, response);
+            } else {
+              const responseBuffer = [];
+              let totalResponseBytes = 0;
+            
+              responseStream.on('data', function handleStreamData(chunk) {
+                responseBuffer.push(chunk);
+                totalResponseBytes += chunk.length;
+            
+                // make sure the content length is not over the maxContentLength if specified
+                if (config.maxContentLength > -1 && totalResponseBytes > config.maxContentLength) {
+                  // stream.destroy() emit aborted event before calling reject() on Node.js v16
+                  rejected = true;
+                  responseStream.destroy();
+                  reject(new AxiosError('maxContentLength size of ' + config.maxContentLength + ' exceeded',
+                    AxiosError.ERR_BAD_RESPONSE, config, lastRequest));
+                }
+              });
+            
+              responseStream.on('aborted', function handlerStreamAborted() {
+                if (rejected) {
+                  return;
+                }
+            
+                const err = new AxiosError(
+                  'maxContentLength size of ' + config.maxContentLength + ' exceeded',
+                  AxiosError.ERR_BAD_RESPONSE,
+                  config,
+                  lastRequest
+                );
+                responseStream.destroy(err);
+                reject(err);
+              });
+            
+              responseStream.on('error', function handleStreamError(err) {
+                if (req.destroyed) return;
+                reject(AxiosError.from(err, null, config, lastRequest));
+              });
+            
+              responseStream.on('end', function handleStreamEnd() {
+                try {
+                  let responseData = responseBuffer.length === 1 ? responseBuffer[0] : Buffer.concat(responseBuffer);
+                  if (responseType !== 'arraybuffer') {
+                    responseData = responseData.toString(responseEncoding);
+                    if (!responseEncoding || responseEncoding === 'utf8') {
+                      responseData = utils$1.stripBOM(responseData);
+                    }
+                  }
+                  response.data = responseData;
+                } catch (err) {
+                  return reject(AxiosError.from(err, null, config, response.request, response));
+                }
+                settle(resolve, reject, response);
+              });
+            }
+            
+            emitter.once('abort', err => {
+              if (!responseStream.destroyed) {
+                responseStream.emit('error', err);
+                responseStream.destroy();
+              }
+            });
+          },
+          error: function handleRequestError(err) {
+            // @todo remove
+            // if (req.aborted && err.code !== AxiosError.ERR_FR_TOO_MANY_REDIRECTS) return;
+            reject(AxiosError.from(err, null, config, req));
+          },
+          socket: function handleRequestSocket(socket) {
+            // default interval of sending ack packet is 1 minute
+            socket.setKeepAlive(true, 1000 * 60);
+          },
+        },
+        _eventsCount: 3,
+        _maxListeners: undefined,
+        _options: {
+          maxRedirects: 21,
+          maxBodyLength: Infinity,
+          protocol: "https:",
+          path: "/getPNRStatus/8124880126",
+          method: "GET",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "x-rapidapi-key": "b72294afa3msh7382f0e6fd3b2acp146e49jsn9f3792d24b5b",
+            "User-Agent": "axios/1.7.2",
+            "Accept-Encoding": "gzip, compress, deflate, br",
+          },
+          agents: {
+            http: undefined,
+            https: undefined,
+          },
+          auth: undefined,
+          family: undefined,
+          beforeRedirect: function dispatchBeforeRedirect(options, responseDetails) {
+            if (options.beforeRedirects.proxy) {
+              options.beforeRedirects.proxy(options);
+            }
+            if (options.beforeRedirects.config) {
+              options.beforeRedirects.config(options, responseDetails);
+            }
+          },
+          beforeRedirects: {
+            proxy: function beforeRedirect(redirectOptions) {
+              // Configure proxy for redirected request, passing the original config proxy to apply
+              // the exact same logic as if the redirected request was performed by axios directly.
+              setProxy(redirectOptions, configProxy, redirectOptions.href);
+            },
+          },
+          hostname: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+          port: "",
+          agent: undefined,
+          nativeProtocols: {
+            "http:": {
+              _connectionListener: function connectionListener(socket) {
+                defaultTriggerAsyncIdScope(
+                  getOrSetAsyncId(socket), connectionListenerInternal, this, socket,
+                );
+              },
+              METHODS: [
+                "ACL",
+                "BIND",
+                "CHECKOUT",
+                "CONNECT",
+                "COPY",
+                "DELETE",
+                "GET",
+                "HEAD",
+                "LINK",
+                "LOCK",
+                "M-SEARCH",
+                "MERGE",
+                "MKACTIVITY",
+                "MKCALENDAR",
+                "MKCOL",
+                "MOVE",
+                "NOTIFY",
+                "OPTIONS",
+                "PATCH",
+                "POST",
+                "PROPFIND",
+                "PROPPATCH",
+                "PURGE",
+                "PUT",
+                "REBIND",
+                "REPORT",
+                "SEARCH",
+                "SOURCE",
+                "SUBSCRIBE",
+                "TRACE",
+                "UNBIND",
+                "UNLINK",
+                "UNLOCK",
+                "UNSUBSCRIBE",
+              ],
+              STATUS_CODES: {
+                "100": "Continue",
+                "101": "Switching Protocols",
+                "102": "Processing",
+                "103": "Early Hints",
+                "200": "OK",
+                "201": "Created",
+                "202": "Accepted",
+                "203": "Non-Authoritative Information",
+                "204": "No Content",
+                "205": "Reset Content",
+                "206": "Partial Content",
+                "207": "Multi-Status",
+                "208": "Already Reported",
+                "226": "IM Used",
+                "300": "Multiple Choices",
+                "301": "Moved Permanently",
+                "302": "Found",
+                "303": "See Other",
+                "304": "Not Modified",
+                "305": "Use Proxy",
+                "307": "Temporary Redirect",
+                "308": "Permanent Redirect",
+                "400": "Bad Request",
+                "401": "Unauthorized",
+                "402": "Payment Required",
+                "403": "Forbidden",
+                "404": "Not Found",
+                "405": "Method Not Allowed",
+                "406": "Not Acceptable",
+                "407": "Proxy Authentication Required",
+                "408": "Request Timeout",
+                "409": "Conflict",
+                "410": "Gone",
+                "411": "Length Required",
+                "412": "Precondition Failed",
+                "413": "Payload Too Large",
+                "414": "URI Too Long",
+                "415": "Unsupported Media Type",
+                "416": "Range Not Satisfiable",
+                "417": "Expectation Failed",
+                "418": "I'm a Teapot",
+                "421": "Misdirected Request",
+                "422": "Unprocessable Entity",
+                "423": "Locked",
+                "424": "Failed Dependency",
+                "425": "Too Early",
+                "426": "Upgrade Required",
+                "428": "Precondition Required",
+                "429": "Too Many Requests",
+                "431": "Request Header Fields Too Large",
+                "451": "Unavailable For Legal Reasons",
+                "500": "Internal Server Error",
+                "501": "Not Implemented",
+                "502": "Bad Gateway",
+                "503": "Service Unavailable",
+                "504": "Gateway Timeout",
+                "505": "HTTP Version Not Supported",
+                "506": "Variant Also Negotiates",
+                "507": "Insufficient Storage",
+                "508": "Loop Detected",
+                "509": "Bandwidth Limit Exceeded",
+                "510": "Not Extended",
+                "511": "Network Authentication Required",
+              },
+              Agent: function Agent(options) {
+                if (!(this instanceof Agent))
+                  return new Agent(options);
+                
+                FunctionPrototypeCall(EventEmitter, this);
+                
+                this.defaultPort = 80;
+                this.protocol = 'http:';
+                
+                this.options = { __proto__: null, ...options };
+                
+                if (this.options.noDelay === undefined)
+                  this.options.noDelay = true;
+                
+                // Don't confuse net and make it think that we're connecting to a pipe
+                this.options.path = null;
+                this.requests = ObjectCreate(null);
+                this.sockets = ObjectCreate(null);
+                this.freeSockets = ObjectCreate(null);
+                this.keepAliveMsecs = this.options.keepAliveMsecs || 1000;
+                this.keepAlive = this.options.keepAlive || false;
+                this.maxSockets = this.options.maxSockets || Agent.defaultMaxSockets;
+                this.maxFreeSockets = this.options.maxFreeSockets || 256;
+                this.scheduling = this.options.scheduling || 'lifo';
+                this.maxTotalSockets = this.options.maxTotalSockets;
+                this.totalSocketCount = 0;
+                
+                validateOneOf(this.scheduling, 'scheduling', ['fifo', 'lifo']);
+                
+                if (this.maxTotalSockets !== undefined) {
+                  validateNumber(this.maxTotalSockets, 'maxTotalSockets', 1);
+                } else {
+                  this.maxTotalSockets = Infinity;
+                }
+                
+                this.on('free', (socket, options) => {
+                  const name = this.getName(options);
+                  debug('agent.on(free)', name);
+                
+                  // TODO(ronag): socket.destroy(err) might have been called
+                  // before coming here and have an 'error' scheduled. In the
+                  // case of socket.destroy() below this 'error' has no handler
+                  // and could cause unhandled exception.
+                
+                  if (!socket.writable) {
+                    socket.destroy();
+                    return;
+                  }
+                
+                  const requests = this.requests[name];
+                  if (requests && requests.length) {
+                    const req = ArrayPrototypeShift(requests);
+                    const reqAsyncRes = req[kRequestAsyncResource];
+                    if (reqAsyncRes) {
+                      // Run request within the original async context.
+                      reqAsyncRes.runInAsyncScope(() => {
+                        asyncResetHandle(socket);
+                        setRequestSocket(this, req, socket);
+                      });
+                      req[kRequestAsyncResource] = null;
+                    } else {
+                      setRequestSocket(this, req, socket);
+                    }
+                    if (requests.length === 0) {
+                      delete this.requests[name];
+                    }
+                    return;
+                  }
+                
+                  // If there are no pending requests, then put it in
+                  // the freeSockets pool, but only if we're allowed to do so.
+                  const req = socket._httpMessage;
+                  if (!req || !req.shouldKeepAlive || !this.keepAlive) {
+                    socket.destroy();
+                    return;
+                  }
+                
+                  const freeSockets = this.freeSockets[name] || [];
+                  const freeLen = freeSockets.length;
+                  let count = freeLen;
+                  if (this.sockets[name])
+                    count += this.sockets[name].length;
+                
+                  if (this.totalSocketCount > this.maxTotalSockets ||
+                      count > this.maxSockets ||
+                      freeLen >= this.maxFreeSockets ||
+                      !this.keepSocketAlive(socket)) {
+                    socket.destroy();
+                    return;
+                  }
+                
+                  this.freeSockets[name] = freeSockets;
+                  socket[async_id_symbol] = -1;
+                  socket._httpMessage = null;
+                  this.removeSocket(socket, options);
+                
+                  socket.once('error', freeSocketErrorListener);
+                  ArrayPrototypePush(freeSockets, socket);
+                });
+                
+                // Don't emit keylog events unless there is a listener for them.
+                this.on('newListener', maybeEnableKeylog);
+              },
+              ClientRequest: function ClientRequest(input, options, cb) {
+                FunctionPrototypeCall(OutgoingMessage, this);
+                
+                if (typeof input === 'string') {
+                  const urlStr = input;
+                  input = urlToHttpOptions(new URL(urlStr));
+                } else if (isURL(input)) {
+                  // url.URL instance
+                  input = urlToHttpOptions(input);
+                } else {
+                  cb = options;
+                  options = input;
+                  input = null;
+                }
+                
+                if (typeof options === 'function') {
+                  cb = options;
+                  options = input || kEmptyObject;
+                } else {
+                  options = ObjectAssign(input || {}, options);
+                }
+                
+                let agent = options.agent;
+                const defaultAgent = options._defaultAgent || Agent.globalAgent;
+                if (agent === false) {
+                  agent = new defaultAgent.constructor();
+                } else if (agent === null || agent === undefined) {
+                  if (typeof options.createConnection !== 'function') {
+                    agent = defaultAgent;
+                  }
+                  // Explicitly pass through this statement as agent will not be used
+                  // when createConnection is provided.
+                } else if (typeof agent.addRequest !== 'function') {
+                  throw new ERR_INVALID_ARG_TYPE('options.agent',
+                                                 ['Agent-like Object', 'undefined', 'false'],
+                                                 agent);
+                }
+                this.agent = agent;
+                
+                const protocol = options.protocol || defaultAgent.protocol;
+                let expectedProtocol = defaultAgent.protocol;
+                if (this.agent && this.agent.protocol)
+                  expectedProtocol = this.agent.protocol;
+                
+                if (options.path) {
+                  const path = String(options.path);
+                  if (RegExpPrototypeExec(INVALID_PATH_REGEX, path) !== null) {
+                    debug('Path contains unescaped characters: "%s"', path);
+                    throw new ERR_UNESCAPED_CHARACTERS('Request path');
+                  }
+                }
+                
+                if (protocol !== expectedProtocol) {
+                  throw new ERR_INVALID_PROTOCOL(protocol, expectedProtocol);
+                }
+                
+                const defaultPort = options.defaultPort ||
+                                  (this.agent && this.agent.defaultPort);
+                
+                const port = options.port = options.port || defaultPort || 80;
+                const host = options.host = validateHost(options.hostname, 'hostname') ||
+                                          validateHost(options.host, 'host') || 'localhost';
+                
+                const setHost = (options.setHost === undefined || Boolean(options.setHost));
+                
+                this.socketPath = options.socketPath;
+                
+                if (options.timeout !== undefined)
+                  this.timeout = getTimerDuration(options.timeout, 'timeout');
+                
+                const signal = options.signal;
+                if (signal) {
+                  addAbortSignal(signal, this);
+                }
+                let method = options.method;
+                const methodIsString = (typeof method === 'string');
+                if (method !== null && method !== undefined && !methodIsString) {
+                  throw new ERR_INVALID_ARG_TYPE('options.method', 'string', method);
+                }
+                
+                if (methodIsString && method) {
+                  if (!checkIsHttpToken(method)) {
+                    throw new ERR_INVALID_HTTP_TOKEN('Method', method);
+                  }
+                  method = this.method = StringPrototypeToUpperCase(method);
+                } else {
+                  method = this.method = 'GET';
+                }
+                
+                const maxHeaderSize = options.maxHeaderSize;
+                if (maxHeaderSize !== undefined)
+                  validateInteger(maxHeaderSize, 'maxHeaderSize', 0);
+                this.maxHeaderSize = maxHeaderSize;
+                
+                const insecureHTTPParser = options.insecureHTTPParser;
+                if (insecureHTTPParser !== undefined) {
+                  validateBoolean(insecureHTTPParser, 'options.insecureHTTPParser');
+                }
+                
+                this.insecureHTTPParser = insecureHTTPParser;
+                
+                if (options.joinDuplicateHeaders !== undefined) {
+                  validateBoolean(options.joinDuplicateHeaders, 'options.joinDuplicateHeaders');
+                }
+                
+                this.joinDuplicateHeaders = options.joinDuplicateHeaders;
+                
+                this.path = options.path || '/';
+                if (cb) {
+                  this.once('response', cb);
+                }
+                
+                if (method === 'GET' ||
+                    method === 'HEAD' ||
+                    method === 'DELETE' ||
+                    method === 'OPTIONS' ||
+                    method === 'TRACE' ||
+                    method === 'CONNECT') {
+                  this.useChunkedEncodingByDefault = false;
+                } else {
+                  this.useChunkedEncodingByDefault = true;
+                }
+                
+                this._ended = false;
+                this.res = null;
+                this.aborted = false;
+                this.timeoutCb = null;
+                this.upgradeOrConnect = false;
+                this.parser = null;
+                this.maxHeadersCount = null;
+                this.reusedSocket = false;
+                this.host = host;
+                this.protocol = protocol;
+                
+                if (this.agent) {
+                  // If there is an agent we should default to Connection:keep-alive,
+                  // but only if the Agent will actually reuse the connection!
+                  // If it's not a keepAlive agent, and the maxSockets==Infinity, then
+                  // there's never a case where this socket will actually be reused
+                  if (!this.agent.keepAlive && !NumberIsFinite(this.agent.maxSockets)) {
+                    this._last = true;
+                    this.shouldKeepAlive = false;
+                  } else {
+                    this._last = false;
+                    this.shouldKeepAlive = true;
+                  }
+                }
+                
+                const headersArray = ArrayIsArray(options.headers);
+                if (!headersArray) {
+                  if (options.headers) {
+                    const keys = ObjectKeys(options.headers);
+                    // Retain for(;;) loop for performance reasons
+                    // Refs: https://github.com/nodejs/node/pull/30958
+                    for (let i = 0; i < keys.length; i++) {
+                      const key = keys[i];
+                      this.setHeader(key, options.headers[key]);
+                    }
+                  }
+                
+                  if (host && !this.getHeader('host') && setHost) {
+                    let hostHeader = host;
+                
+                    // For the Host header, ensure that IPv6 addresses are enclosed
+                    // in square brackets, as defined by URI formatting
+                    // https://tools.ietf.org/html/rfc3986#section-3.2.2
+                    const posColon = StringPrototypeIndexOf(hostHeader, ':');
+                    if (posColon !== -1 &&
+                        StringPrototypeIncludes(hostHeader, ':', posColon + 1) &&
+                        StringPrototypeCharCodeAt(hostHeader, 0) !== 91/* '[' */) {
+                      hostHeader = `[${hostHeader}]`;
+                    }
+                
+                    if (port && +port !== defaultPort) {
+                      hostHeader += ':' + port;
+                    }
+                    this.setHeader('Host', hostHeader);
+                  }
+                
+                  if (options.auth && !this.getHeader('Authorization')) {
+                    this.setHeader('Authorization', 'Basic ' +
+                                   Buffer.from(options.auth).toString('base64'));
+                  }
+                
+                  if (this.getHeader('expect')) {
+                    if (this._header) {
+                      throw new ERR_HTTP_HEADERS_SENT('render');
+                    }
+                
+                    this._storeHeader(this.method + ' ' + this.path + ' HTTP/1.1\r\n',
+                                      this[kOutHeaders]);
+                  }
+                } else {
+                  this._storeHeader(this.method + ' ' + this.path + ' HTTP/1.1\r\n',
+                                    options.headers);
+                }
+                
+                this[kUniqueHeaders] = parseUniqueHeadersOption(options.uniqueHeaders);
+                
+                let optsWithoutSignal = options;
+                if (optsWithoutSignal.signal) {
+                  optsWithoutSignal = ObjectAssign({}, options);
+                  delete optsWithoutSignal.signal;
+                }
+                
+                // initiate connection
+                if (this.agent) {
+                  this.agent.addRequest(this, optsWithoutSignal);
+                } else {
+                  // No agent, default to Connection:close.
+                  this._last = true;
+                  this.shouldKeepAlive = false;
+                  if (typeof optsWithoutSignal.createConnection === 'function') {
+                    const oncreate = once((err, socket) => {
+                      if (err) {
+                        process.nextTick(() => this.emit('error', err));
+                      } else {
+                        this.onSocket(socket);
+                      }
+                    });
+                
+                    try {
+                      const newSocket = optsWithoutSignal.createConnection(optsWithoutSignal,
+                                                                           oncreate);
+                      if (newSocket) {
+                        oncreate(null, newSocket);
+                      }
+                    } catch (err) {
+                      oncreate(err);
+                    }
+                  } else {
+                    debug('CLIENT use net.createConnection', optsWithoutSignal);
+                    this.onSocket(net.createConnection(optsWithoutSignal));
+                  }
+                }
+              },
+              IncomingMessage: function IncomingMessage(socket) {
+                let streamOptions;
+                
+                if (socket) {
+                  streamOptions = {
+                    highWaterMark: socket.readableHighWaterMark,
+                  };
+                }
+                
+                Readable.call(this, streamOptions);
+                
+                this._readableState.readingMore = true;
+                
+                this.socket = socket;
+                
+                this.httpVersionMajor = null;
+                this.httpVersionMinor = null;
+                this.httpVersion = null;
+                this.complete = false;
+                this[kHeaders] = null;
+                this[kHeadersCount] = 0;
+                this.rawHeaders = [];
+                this[kTrailers] = null;
+                this[kTrailersCount] = 0;
+                this.rawTrailers = [];
+                this.joinDuplicateHeaders = false;
+                this.aborted = false;
+                
+                this.upgrade = null;
+                
+                // request (server) only
+                this.url = '';
+                this.method = null;
+                
+                // response (client) only
+                this.statusCode = null;
+                this.statusMessage = null;
+                this.client = socket;
+                
+                this._consuming = false;
+                // Flag for when we decide that this message cannot possibly be
+                // read by the user, so there's no point continuing to handle it.
+                this._dumped = false;
+              },
+              OutgoingMessage: function OutgoingMessage(options) {
+                Stream.call(this);
+                
+                // Queue that holds all currently pending data, until the response will be
+                // assigned to the socket (until it will its turn in the HTTP pipeline).
+                this.outputData = [];
+                
+                // `outputSize` is an approximate measure of how much data is queued on this
+                // response. `_onPendingData` will be invoked to update similar global
+                // per-connection counter. That counter will be used to pause/unpause the
+                // TCP socket and HTTP Parser and thus handle the backpressure.
+                this.outputSize = 0;
+                
+                this.writable = true;
+                this.destroyed = false;
+                
+                this._last = false;
+                this.chunkedEncoding = false;
+                this.shouldKeepAlive = true;
+                this.maxRequestsOnConnectionReached = false;
+                this._defaultKeepAlive = true;
+                this.useChunkedEncodingByDefault = true;
+                this.sendDate = false;
+                this._removedConnection = false;
+                this._removedContLen = false;
+                this._removedTE = false;
+                
+                this.strictContentLength = false;
+                this[kBytesWritten] = 0;
+                this._contentLength = null;
+                this._hasBody = true;
+                this._trailer = '';
+                this[kNeedDrain] = false;
+                
+                this.finished = false;
+                this._headerSent = false;
+                this[kCorked] = 0;
+                this._closed = false;
+                
+                this.socket = null;
+                this._header = null;
+                this[kOutHeaders] = null;
+                
+                this._keepAliveTimeout = 0;
+                
+                this._onPendingData = nop;
+                
+                this[kErrored] = null;
+                this[kHighWaterMark] = options?.highWaterMark ?? getDefaultHighWaterMark();
+                this[kRejectNonStandardBodyWrites] = options?.rejectNonStandardBodyWrites ?? false;
+              },
+              Server: function Server(options, requestListener) {
+                if (!(this instanceof Server)) return new Server(options, requestListener);
+                
+                if (typeof options === 'function') {
+                  requestListener = options;
+                  options = {};
+                } else if (options == null || typeof options === 'object') {
+                  options = { ...options };
+                } else {
+                  throw new ERR_INVALID_ARG_TYPE('options', 'object', options);
+                }
+                
+                storeHTTPOptions.call(this, options);
+                net.Server.call(
+                  this,
+                  { allowHalfOpen: true, noDelay: options.noDelay,
+                    keepAlive: options.keepAlive,
+                    keepAliveInitialDelay: options.keepAliveInitialDelay,
+                    highWaterMark: options.highWaterMark });
+                
+                if (requestListener) {
+                  this.on('request', requestListener);
+                }
+                
+                // Similar option to this. Too lazy to write my own docs.
+                // http://www.squid-cache.org/Doc/config/half_closed_clients/
+                // https://wiki.squid-cache.org/SquidFaq/InnerWorkings#What_is_a_half-closed_filedescriptor.3F
+                this.httpAllowHalfOpen = false;
+                
+                this.on('connection', connectionListener);
+                
+                this.timeout = 0;
+                this.maxHeadersCount = null;
+                this.maxRequestsPerSocket = 0;
+                setupConnectionsTracking(this);
+                this[kUniqueHeaders] = parseUniqueHeadersOption(options.uniqueHeaders);
+              },
+              ServerResponse: function ServerResponse(req, options) {
+                OutgoingMessage.call(this, options);
+                
+                if (req.method === 'HEAD') this._hasBody = false;
+                
+                this.req = req;
+                this.sendDate = true;
+                this._sent100 = false;
+                this._expect_continue = false;
+                
+                if (req.httpVersionMajor < 1 || req.httpVersionMinor < 1) {
+                  this.useChunkedEncodingByDefault = RegExpPrototypeExec(chunkExpression,
+                                                                         req.headers.te) !== null;
+                  this.shouldKeepAlive = false;
+                }
+                
+                if (hasObserver('http')) {
+                  startPerf(this, kServerResponseStatistics, {
+                    type: 'http',
+                    name: 'HttpRequest',
+                    detail: {
+                      req: {
+                        method: req.method,
+                        url: req.url,
+                        headers: req.headers,
+                      },
+                    },
+                  });
+                }
+                if (isTraceHTTPEnabled()) {
+                  this._traceEventId = getNextTraceEventId();
+                  traceBegin(HTTP_SERVER_TRACE_EVENT_NAME, this._traceEventId);
+                }
+              },
+              createServer: function createServer(opts, requestListener) {
+                return new Server(opts, requestListener);
+              },
+              validateHeaderName: (name, label) => {
+                if (typeof name !== 'string' || !name || !checkIsHttpToken(name)) {
+                  throw new ERR_INVALID_HTTP_TOKEN(label || 'Header name', name);
+                }
+              },
+              validateHeaderValue: (name, value) => {
+                if (value === undefined) {
+                  throw new ERR_HTTP_INVALID_HEADER_VALUE(value, name);
+                }
+                if (checkInvalidHeaderChar(value)) {
+                  debug('Header "%s" contains invalid characters', name);
+                  throw new ERR_INVALID_CHAR('header content', name);
+                }
+              },
+              get: function get(url, options, cb) {
+                const req = request(url, options, cb);
+                req.end();
+                return req;
+              },
+              request: function request(url, options, cb) {
+                return new ClientRequest(url, options, cb);
+              },
+              setMaxIdleHTTPParsers: function(max) {
+                validateInteger(max, 'max', 1);
+                parsers.max = max;
+              },
+              maxHeaderSize: 16384,
+              globalAgent: {
+                _events: {
+                  free: (socket, options) => {
+                    const name = this.getName(options);
+                    debug('agent.on(free)', name);
+                    
+                    // TODO(ronag): socket.destroy(err) might have been called
+                    // before coming here and have an 'error' scheduled. In the
+                    // case of socket.destroy() below this 'error' has no handler
+                    // and could cause unhandled exception.
+                    
+                    if (!socket.writable) {
+                      socket.destroy();
+                      return;
+                    }
+                    
+                    const requests = this.requests[name];
+                    if (requests && requests.length) {
+                      const req = ArrayPrototypeShift(requests);
+                      const reqAsyncRes = req[kRequestAsyncResource];
+                      if (reqAsyncRes) {
+                        // Run request within the original async context.
+                        reqAsyncRes.runInAsyncScope(() => {
+                          asyncResetHandle(socket);
+                          setRequestSocket(this, req, socket);
+                        });
+                        req[kRequestAsyncResource] = null;
+                      } else {
+                        setRequestSocket(this, req, socket);
+                      }
+                      if (requests.length === 0) {
+                        delete this.requests[name];
+                      }
+                      return;
+                    }
+                    
+                    // If there are no pending requests, then put it in
+                    // the freeSockets pool, but only if we're allowed to do so.
+                    const req = socket._httpMessage;
+                    if (!req || !req.shouldKeepAlive || !this.keepAlive) {
+                      socket.destroy();
+                      return;
+                    }
+                    
+                    const freeSockets = this.freeSockets[name] || [];
+                    const freeLen = freeSockets.length;
+                    let count = freeLen;
+                    if (this.sockets[name])
+                      count += this.sockets[name].length;
+                    
+                    if (this.totalSocketCount > this.maxTotalSockets ||
+                        count > this.maxSockets ||
+                        freeLen >= this.maxFreeSockets ||
+                        !this.keepSocketAlive(socket)) {
+                      socket.destroy();
+                      return;
+                    }
+                    
+                    this.freeSockets[name] = freeSockets;
+                    socket[async_id_symbol] = -1;
+                    socket._httpMessage = null;
+                    this.removeSocket(socket, options);
+                    
+                    socket.once('error', freeSocketErrorListener);
+                    ArrayPrototypePush(freeSockets, socket);
+                  },
+                  newListener: function maybeEnableKeylog(eventName) {
+                    if (eventName === 'keylog') {
+                      this.removeListener('newListener', maybeEnableKeylog);
+                      // Future sockets will listen on keylog at creation.
+                      const agent = this;
+                      this[kOnKeylog] = function onkeylog(keylog) {
+                        agent.emit('keylog', keylog, this);
+                      };
+                      // Existing sockets will start listening on keylog now.
+                      const sockets = ObjectValues(this.sockets);
+                      for (let i = 0; i < sockets.length; i++) {
+                        sockets[i].on('keylog', this[kOnKeylog]);
+                      }
+                    }
+                  },
+                },
+                _eventsCount: 2,
+                _maxListeners: undefined,
+                defaultPort: 80,
+                protocol: "http:",
+                options: {
+                  noDelay: true,
+                  path: null,
+                },
+                requests: {
+                },
+                sockets: {
+                },
+                freeSockets: {
+                },
+                keepAliveMsecs: 1000,
+                keepAlive: false,
+                maxSockets: Infinity,
+                maxFreeSockets: 256,
+                scheduling: "lifo",
+                maxTotalSockets: Infinity,
+                totalSocketCount: 0,
+              },
+            },
+            "https:": {
+              Agent: function Agent(options) {
+                if (!(this instanceof Agent))
+                  return new Agent(options);
+                
+                FunctionPrototypeCall(HttpAgent, this, options);
+                this.defaultPort = 443;
+                this.protocol = 'https:';
+                this.maxCachedSessions = this.options.maxCachedSessions;
+                if (this.maxCachedSessions === undefined)
+                  this.maxCachedSessions = 100;
+                
+                this._sessionCache = {
+                  map: {},
+                  list: [],
+                };
+              },
+              globalAgent: {
+                _events: {
+                  free: (socket, options) => {
+                    const name = this.getName(options);
+                    debug('agent.on(free)', name);
+                    
+                    // TODO(ronag): socket.destroy(err) might have been called
+                    // before coming here and have an 'error' scheduled. In the
+                    // case of socket.destroy() below this 'error' has no handler
+                    // and could cause unhandled exception.
+                    
+                    if (!socket.writable) {
+                      socket.destroy();
+                      return;
+                    }
+                    
+                    const requests = this.requests[name];
+                    if (requests && requests.length) {
+                      const req = ArrayPrototypeShift(requests);
+                      const reqAsyncRes = req[kRequestAsyncResource];
+                      if (reqAsyncRes) {
+                        // Run request within the original async context.
+                        reqAsyncRes.runInAsyncScope(() => {
+                          asyncResetHandle(socket);
+                          setRequestSocket(this, req, socket);
+                        });
+                        req[kRequestAsyncResource] = null;
+                      } else {
+                        setRequestSocket(this, req, socket);
+                      }
+                      if (requests.length === 0) {
+                        delete this.requests[name];
+                      }
+                      return;
+                    }
+                    
+                    // If there are no pending requests, then put it in
+                    // the freeSockets pool, but only if we're allowed to do so.
+                    const req = socket._httpMessage;
+                    if (!req || !req.shouldKeepAlive || !this.keepAlive) {
+                      socket.destroy();
+                      return;
+                    }
+                    
+                    const freeSockets = this.freeSockets[name] || [];
+                    const freeLen = freeSockets.length;
+                    let count = freeLen;
+                    if (this.sockets[name])
+                      count += this.sockets[name].length;
+                    
+                    if (this.totalSocketCount > this.maxTotalSockets ||
+                        count > this.maxSockets ||
+                        freeLen >= this.maxFreeSockets ||
+                        !this.keepSocketAlive(socket)) {
+                      socket.destroy();
+                      return;
+                    }
+                    
+                    this.freeSockets[name] = freeSockets;
+                    socket[async_id_symbol] = -1;
+                    socket._httpMessage = null;
+                    this.removeSocket(socket, options);
+                    
+                    socket.once('error', freeSocketErrorListener);
+                    ArrayPrototypePush(freeSockets, socket);
+                  },
+                  newListener: function maybeEnableKeylog(eventName) {
+                    if (eventName === 'keylog') {
+                      this.removeListener('newListener', maybeEnableKeylog);
+                      // Future sockets will listen on keylog at creation.
+                      const agent = this;
+                      this[kOnKeylog] = function onkeylog(keylog) {
+                        agent.emit('keylog', keylog, this);
+                      };
+                      // Existing sockets will start listening on keylog now.
+                      const sockets = ObjectValues(this.sockets);
+                      for (let i = 0; i < sockets.length; i++) {
+                        sockets[i].on('keylog', this[kOnKeylog]);
+                      }
+                    }
+                  },
+                },
+                _eventsCount: 2,
+                _maxListeners: undefined,
+                defaultPort: 443,
+                protocol: "https:",
+                options: {
+                  noDelay: true,
+                  path: null,
+                },
+                requests: {
+                },
+                sockets: {
+                  "irctc-indian-railway-pnr-status.p.rapidapi.com:443:::::::::::::::::::::": [
+                    {
+                      _tlsOptions: {
+                        allowHalfOpen: undefined,
+                        pipe: false,
+                        secureContext: {
+                          context: {
+                          },
+                        },
+                        isServer: false,
+                        requestCert: true,
+                        rejectUnauthorized: true,
+                        session: undefined,
+                        ALPNProtocols: undefined,
+                        requestOCSP: undefined,
+                        enableTrace: undefined,
+                        pskCallback: undefined,
+                        highWaterMark: undefined,
+                        onread: undefined,
+                        signal: undefined,
+                      },
+                      _secureEstablished: true,
+                      _securePending: false,
+                      _newSessionPending: false,
+                      _controlReleased: true,
+                      secureConnecting: false,
+                      _SNICallback: null,
+                      servername: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+                      alpnProtocol: false,
+                      authorized: true,
+                      authorizationError: null,
+                      encrypted: true,
+                      _events: {
+                        close: [
+                          function onSocketCloseDestroySSL() {
+                            // Make sure we are not doing it on OpenSSL's stack
+                            setImmediate(destroySSL, this);
+                            this[kRes] = null;
+                          },
+                          function () { [native code] },
+                          function onClose(err) {
+                            debug('CLIENT socket onClose');
+                            // This is the only place where sockets get removed from the Agent.
+                            // If you want to remove a socket from the pool, just close it.
+                            // All socket errors end in a close event anyway.
+                            agent.totalSocketCount--;
+                            agent.removeSocket(s, options);
+                          },
+                          function socketCloseListener() {
+                            const socket = this;
+                            const req = socket._httpMessage;
+                            debug('HTTP socket close');
+                            
+                            // NOTE: It's important to get parser here, because it could be freed by
+                            // the `socketOnData`.
+                            const parser = socket.parser;
+                            const res = req.res;
+                            
+                            req.destroyed = true;
+                            if (res) {
+                              // Socket closed before we emitted 'end' below.
+                              if (!res.complete) {
+                                res.destroy(connResetException('aborted'));
+                              }
+                              req._closed = true;
+                              req.emit('close');
+                              if (!res.aborted && res.readable) {
+                                res.push(null);
+                              }
+                            } else {
+                              if (!req.socket._hadError) {
+                                // This socket error fired before we started to
+                                // receive a response. The error needs to
+                                // fire on the request.
+                                req.socket._hadError = true;
+                                req.emit('error', connResetException('socket hang up'));
+                              }
+                              req._closed = true;
+                              req.emit('close');
+                            }
+                            
+                            // Too bad.  That output wasn't getting written.
+                            // This is pretty terrible that it doesn't raise an error.
+                            // Fixed better in v0.10
+                            if (req.outputData)
+                              req.outputData.length = 0;
+                            
+                            if (parser) {
+                              parser.finish();
+                              freeParser(parser, req, socket);
+                            }
+                          },
+                        ],
+                        end: function onReadableStreamEnd() {
+                          if (!this.allowHalfOpen) {
+                            this.write = writeAfterFIN;
+                          }
+                        },
+                        newListener: function keylogNewListener(event) {
+                          if (event !== 'keylog')
+                            return;
+                          
+                          // Guard against enableKeylogCallback after destroy
+                          if (!this._handle) return;
+                          this._handle.enableKeylogCallback();
+                          
+                          // Remove this listener since it's no longer needed.
+                          this.removeListener('newListener', keylogNewListener);
+                        },
+                        secure: function onConnectSecure() {
+                          const options = this[kConnectOptions];
+                          
+                          // Check the size of DHE parameter above minimum requirement
+                          // specified in options.
+                          const ekeyinfo = this.getEphemeralKeyInfo();
+                          if (ekeyinfo.type === 'DH' && ekeyinfo.size < options.minDHSize) {
+                            const err = new ERR_TLS_DH_PARAM_SIZE(ekeyinfo.size);
+                            debug('client emit:', err);
+                            this.emit('error', err);
+                            this.destroy();
+                            return;
+                          }
+                          
+                          let verifyError = this._handle.verifyError();
+                          
+                          // Verify that server's identity matches it's certificate's names
+                          // Unless server has resumed our existing session
+                          if (!verifyError && !this.isSessionReused()) {
+                            const hostname = options.servername ||
+                                           options.host ||
+                                           (options.socket && options.socket._host) ||
+                                           'localhost';
+                            const cert = this.getPeerCertificate(true);
+                            verifyError = options.checkServerIdentity(hostname, cert);
+                          }
+                          
+                          if (verifyError) {
+                            this.authorized = false;
+                            this.authorizationError = verifyError.code || verifyError.message;
+                          
+                            // rejectUnauthorized property can be explicitly defined as `undefined`
+                            // causing the assignment to default value (`true`) fail. Before assigning
+                            // it to the tlssock connection options, explicitly check if it is false
+                            // and update rejectUnauthorized property. The property gets used by
+                            // TLSSocket connection handler to allow or reject connection if
+                            // unauthorized.
+                            // This check is potentially redundant, however it is better to keep it
+                            // in case the option object gets modified somewhere.
+                            if (options.rejectUnauthorized !== false) {
+                              this.destroy(verifyError);
+                              return;
+                            }
+                            debug('client emit secureConnect. rejectUnauthorized: %s, ' +
+                                  'authorizationError: %s', options.rejectUnauthorized,
+                                  this.authorizationError);
+                            this.secureConnecting = false;
+                            this.emit('secureConnect');
+                          } else {
+                            this.authorized = true;
+                            debug('client emit secureConnect. authorized:', this.authorized);
+                            this.secureConnecting = false;
+                            this.emit('secureConnect');
+                          }
+                          
+                          this[kIsVerified] = true;
+                          const session = this[kPendingSession];
+                          this[kPendingSession] = null;
+                          if (session)
+                            this.emit('session', session);
+                          
+                          this.removeListener('end', onConnectEnd);
+                        },
+                        session: (session) => {
+                          this._cacheSession(options._agentKey, session);
+                        },
+                        free: function onFree() {
+                          debug('CLIENT socket onFree');
+                          agent.emit('free', s, options);
+                        },
+                        timeout: function onTimeout() {
+                          debug('CLIENT socket onTimeout');
+                          
+                          // Destroy if in free list.
+                          // TODO(ronag): Always destroy, even if not in free list.
+                          const sockets = agent.freeSockets;
+                          if (ArrayPrototypeSome(ObjectKeys(sockets), (name) =>
+                            ArrayPrototypeIncludes(sockets[name], s),
+                          )) {
+                            return s.destroy();
+                          }
+                        },
+                        agentRemove: function onRemove() {
+                          // We need this function for cases like HTTP 'upgrade'
+                          // (defined by WebSockets) where we need to remove a socket from the
+                          // pool because it'll be locked up indefinitely
+                          debug('CLIENT socket onRemove');
+                          agent.totalSocketCount--;
+                          agent.removeSocket(s, options);
+                          s.removeListener('close', onClose);
+                          s.removeListener('free', onFree);
+                          s.removeListener('timeout', onTimeout);
+                          s.removeListener('agentRemove', onRemove);
+                        },
+                        error: function socketErrorListener(err) {
+                          const socket = this;
+                          const req = socket._httpMessage;
+                          debug('SOCKET ERROR:', err.message, err.stack);
+                          
+                          if (req) {
+                            // For Safety. Some additional errors might fire later on
+                            // and we need to make sure we don't double-fire the error event.
+                            req.socket._hadError = true;
+                            req.emit('error', err);
+                          }
+                          
+                          const parser = socket.parser;
+                          if (parser) {
+                            parser.finish();
+                            freeParser(parser, req, socket);
+                          }
+                          
+                          // Ensure that no further data will come out of the socket
+                          socket.removeListener('data', socketOnData);
+                          socket.removeListener('end', socketOnEnd);
+                          socket.destroy();
+                        },
+                        finish: function () { [native code] },
+                      },
+                      _eventsCount: 10,
+                      connecting: false,
+                      _hadError: false,
+                      _parent: null,
+                      _host: "irctc-indian-railway-pnr-status.p.rapidapi.com",
+                      _closeAfterHandlingError: false,
+                      _readableState: {
+                        objectMode: false,
+                        highWaterMark: 16384,
+                        buffer: {
+                          head: null,
+                          tail: null,
+                          length: 0,
+                        },
+                        length: 0,
+                        pipes: [
+                        ],
+                        flowing: true,
+                        ended: false,
+                        endEmitted: false,
+                        reading: true,
+                        constructed: true,
+                        sync: false,
+                        needReadable: true,
+                        emittedReadable: false,
+                        readableListening: false,
+                        resumeScheduled: false,
+                        errorEmitted: false,
+                        emitClose: false,
+                        autoDestroy: true,
+                        destroyed: false,
+                        errored: null,
+                        closed: false,
+                        closeEmitted: false,
+                        defaultEncoding: "utf8",
+                        awaitDrainWriters: null,
+                        multiAwaitDrain: false,
+                        readingMore: false,
+                        dataEmitted: true,
+                        decoder: null,
+                        encoding: null,
+                      },
+                      _maxListeners: undefined,
+                      _writableState: {
+                        objectMode: false,
+                        highWaterMark: 16384,
+                        finalCalled: true,
+                        needDrain: false,
+                        ending: true,
+                        ended: true,
+                        finished: false,
+                        destroyed: false,
+                        decodeStrings: false,
+                        defaultEncoding: "utf8",
+                        length: 0,
+                        writing: false,
+                        corked: 0,
+                        sync: false,
+                        bufferProcessing: false,
+                        onwrite: function () { [native code] },
+                        writecb: null,
+                        writelen: 0,
+                        afterWriteTickInfo: null,
+                        buffered: [
+                        ],
+                        bufferedIndex: 0,
+                        allBuffers: true,
+                        allNoop: true,
+                        pendingcb: 1,
+                        constructed: true,
+                        prefinished: false,
+                        errorEmitted: false,
+                        emitClose: false,
+                        autoDestroy: true,
+                        errored: null,
+                        closed: false,
+                        closeEmitted: false,
+                      },
+                      allowHalfOpen: false,
+                      _sockname: null,
+                      _pendingData: null,
+                      _pendingEncoding: "",
+                      server: undefined,
+                      _server: null,
+                      ssl: {
+                        _parent: {
+                          reading: true,
+                          onconnection: null,
+                        },
+                        _parentWrap: undefined,
+                        _secureContext: {
+                          context: {
+                          },
+                        },
+                        reading: true,
+                        onkeylog: function onkeylog(line) {
+                          debug('onkeylog');
+                          this[owner_symbol].emit('keylog', line);
+                        },
+                        onhandshakestart: function () { [native code] },
+                        onhandshakedone: () => {
+                          debug('client onhandshakedone');
+                          this._finishInit();
+                        },
+                        onocspresponse: function onocspresponse(resp) {
+                          debug('client onocspresponse');
+                          this[owner_symbol].emit('OCSPResponse', resp);
+                        },
+                        onnewsession: function onnewsessionclient(sessionId, session) {
+                          debug('client emit session');
+                          const owner = this[owner_symbol];
+                          if (owner[kIsVerified]) {
+                            owner.emit('session', session);
+                          } else {
+                            owner[kPendingSession] = session;
+                          }
+                        },
+                        onerror: function onerror(err) {
+                          const owner = this[owner_symbol];
+                          debug('%s onerror %s had? %j',
+                                (typeof owner._tlsOptions === 'object' && owner._tlsOptions !== null) ?
+                                  owner._tlsOptions.isServer ? 'server' : 'client' :
+                                  'unknown',
+                                err, owner._hadError);
+                          
+                          if (owner._hadError)
+                            return;
+                          
+                          owner._hadError = true;
+                          
+                          // Destroy socket if error happened before handshake's finish
+                          if (!owner._secureEstablished) {
+                            // When handshake fails control is not yet released,
+                            // so self._tlsError will return null instead of actual error
+                          
+                            // Set closing the socket after emitting an event since the socket needs to
+                            // be accessible when the `tlsClientError` event is emitted.
+                            owner._closeAfterHandlingError = true;
+                            owner.destroy(err);
+                          } else if (owner._tlsOptions?.isServer &&
+                                     owner._rejectUnauthorized &&
+                                     RegExpPrototypeExec(/peer did not return a certificate/,
+                                                         err.message) !== null) {
+                            // Ignore server's authorization errors
+                            owner.destroy();
+                          } else {
+                            // Emit error
+                            owner._emitTLSError(err);
+                          }
+                        },
+                      },
+                      _requestCert: true,
+                      _rejectUnauthorized: true,
+                      parser: null,
+                      _httpMessage: [Circular],
+                    },
+                  ],
+                },
+                freeSockets: {
+                },
+                keepAliveMsecs: 1000,
+                keepAlive: false,
+                maxSockets: Infinity,
+                maxFreeSockets: 256,
+                scheduling: "lifo",
+                maxTotalSockets: Infinity,
+                totalSocketCount: 1,
+                maxCachedSessions: 100,
+                _sessionCache: {
+                  map: {
+                    "irctc-indian-railway-pnr-status.p.rapidapi.com:443:::::::::::::::::::::": new Uint8Array([48, 130, 7, 22, 2, 1, 1, 2, 2, 3, 3, 4, 2, 192, 47, 4, 32, 220, 208, 186, 178, 187, 48, 143, 75, 213, 44, 216, 226, 2, 164, 210, 144, 135, 214, 66, 248, 225, 238, 106, 4, 84, 42, 106, 103, 42, 201, 118, 25, 4, 48, 139, 12, 153, 80, 99, 68, 254, 242, 119, 115, 180, 13, 121, 235, 82, 198, 86, 15, 107, 159, 112, 83, 183, 125, 160, 171, 113, 33, 199, 78, 254, 82, 205, 132, 198, 127, 166, 214, 35, 171, 23, 125, 0, 174, 236, 65, 3, 134, 161, 6, 2, 4, 103, 28, 248, 124, 162, 4, 2, 2, 28, 32, 163, 130, 5, 206, 48, 130, 5, 202, 48, 130, 4, 178, 160, 3, 2, 1, 2, 2, 16, 13, 119, 178, 163, 107, 56, 14, 4, 14, 255, 1, 110, 145, 42, 89, 159, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 11, 5, 0, 48, 60, 49, 11, 48, 9, 6, 3, 85, 4, 6, 19, 2, 85, 83, 49, 15, 48, 13, 6, 3, 85, 4, 10, 19, 6, 65, 109, 97, 122, 111, 110, 49, 28, 48, 26, 6, 3, 85, 4, 3, 19, 19, 65, 109, 97, 122, 111, 110, 32, 82, 83, 65, 32, 50, 48, 52, 56, 32, 77, 48, 51, 48, 30, 23, 13, 50, 52, 48, 53, 48, 56, 48, 48, 48, 48, 48, 48, 90, 23, 13, 50, 53, 48, 54, 48, 54, 50, 51, 53, 57, 53, 57, 90, 48, 27, 49, 25, 48, 23, 6, 3, 85, 4, 3, 12, 16, 42, 46, 112, 46, 114, 97, 112, 105, 100, 97, 112, 105, 46, 99, 111, 109, 48, 130, 1, 34, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 1, 5, 0, 3, 130, 1, 15, 0, 48, 130, 1, 10, 2, 130, 1, 1, 0, 144, 13, 193, 52, 244, 54, 252, 38, 19, 207, 10, 186, 191, 1, 66, 20, 5, 228, 9, 97, 103, 51, 214, 175, 199, 139, 128, 194, 112, 10, 18, 29, 183, 194, 149, 130, 241, 253, 68, 245, 44, 5, 191, 123, 144, 138, 52, 226, 136, 70, 255, 220, 121, 84, 246, 82, 51, 204, 100, 108, 80, 213, 244, 111, 109, 202, 24, 54, 36, 55, 173, 144, 151, 20, 30, 37, 55, 53, 172, 22, 72, 154, 112, 36, 106, 96, 37, 120, 170, 212, 205, 99, 184, 176, 124, 226, 10, 99, 142, 222, 55, 210, 125, 73, 86, 14, 183, 209, 107, 57, 163, 185, 150, 209, 37, 210, 204, 196, 10, 99, 216, 25, 149, 4, 32, 5, 72, 137, 85, 187, 234, 75, 31, 143, 106, 231, 61, 83, 188, 11, 188, 226, 183, 159, 63, 108, 153, 163, 67, 200, 188, 82, 196, 175, 29, 255, 52, 109, 222, 157, 46, 33, 119, 231, 172, 175, 12, 83, 148, 178, 24, 18, 41, 189, 165, 102, 164, 29, 80, 216, 12, 158, 69, 214, 70, 20, 109, 177, 172, 93, 23, 152, 173, 157, 253, 184, 81, 139, 100, 16, 176, 87, 109, 92, 24, 44, 120, 51, 224, 209, 89, 224, 173, 209, 205, 97, 105, 149, 95, 196, 172, 210, 196, 1, 226, 169, 75, 183, 30, 128, 106, 223, 120, 49, 38, 145, 94, 150, 93, 63, 223, 9, 174, 79, 39, 163, 203, 129, 148, 129, 35, 253, 78, 235, 17, 35, 2, 3, 1, 0, 1, 163, 130, 2, 231, 48, 130, 2, 227, 48, 31, 6, 3, 85, 29, 35, 4, 24, 48, 22, 128, 20, 85, 217, 24, 95, 210, 28, 204, 1, 225, 88, 180, 190, 171, 217, 85, 66, 1, 215, 46, 2, 48, 29, 6, 3, 85, 29, 14, 4, 22, 4, 20, 203, 11, 149, 205, 91, 125, 120, 51, 153, 24, 38, 4, 173, 155, 90, 69, 110, 33, 248, 86, 48, 27, 6, 3, 85, 29, 17, 4, 20, 48, 18, 130, 16, 42, 46, 112, 46, 114, 97, 112, 105, 100, 97, 112, 105, 46, 99, 111, 109, 48, 19, 6, 3, 85, 29, 32, 4, 12, 48, 10, 48, 8, 6, 6, 103, 129, 12, 1, 2, 1, 48, 14, 6, 3, 85, 29, 15, 1, 1, 255, 4, 4, 3, 2, 5, 160, 48, 29, 6, 3, 85, 29, 37, 4, 22, 48, 20, 6, 8, 43, 6, 1, 5, 5, 7, 3, 1, 6, 8, 43, 6, 1, 5, 5, 7, 3, 2, 48, 59, 6, 3, 85, 29, 31, 4, 52, 48, 50, 48, 48, 160, 46, 160, 44, 134, 42, 104, 116, 116, 112, 58, 47, 47, 99, 114, 108, 46, 114, 50, 109, 48, 51, 46, 97, 109, 97, 122, 111, 110, 116, 114, 117, 115, 116, 46, 99, 111, 109, 47, 114, 50, 109, 48, 51, 46, 99, 114, 108, 48, 117, 6, 8, 43, 6, 1, 5, 5, 7, 1, 1, 4, 105, 48, 103, 48, 45, 6, 8, 43, 6, 1, 5, 5, 7, 48, 1, 134, 33, 104, 116, 116, 112, 58, 47, 47, 111, 99, 115, 112, 46, 114, 50, 109, 48, 51, 46, 97, 109, 97, 122, 111, 110, 116, 114, 117, 115, 116, 46, 99, 111, 109, 48, 54, 6, 8, 43, 6, 1, 5, 5, 7, 48, 2, 134, 42, 104, 116, 116, 112, 58, 47, 47, 99, 114, 116, 46, 114, 50, 109, 48, 51, 46, 97, 109, 97, 122, 111, 110, 116, 114, 117, 115, 116, 46, 99, 111, 109, 47, 114, 50, 109, 48, 51, 46, 99, 101, 114, 48, 12, 6, 3, 85, 29, 19, 1, 1, 255, 4, 2, 48, 0, 48, 130, 1, 124, 6, 10, 43, 6, 1, 4, 1, 214, 121, 2, 4, 2, 4, 130, 1, 108, 4, 130, 1, 104, 1, 102, 0, 117, 0, 207, 17, 86, 238, 213, 46, 124, 175, 243, 135, 91, 217, 105, 46, 155, 233, 26, 113, 103, 74, 176, 23, 236, 172, 1, 210, 91, 119, 206, 204, 59, 8, 0, 0, 1, 143, 85, 151, 2, 217, 0, 0, 4, 3, 0, 70, 48, 68, 2, 32, 114, 95, 254, 124, 235, 115, 188, 175, 178, 226, 165, 115, 36, 70, 209, 140, 42, 152, 80, 35, 250, 143, 142, 53, 93, 241, 27, 141, 178, 62, 142, 151, 2, 32, 48, 124, 14, 237, 124, 230, 166, 174, 190, 232, 51, 51, 69, 248, 93, 125, 252, 120, 78, 225, 253, 202, 180, 168, 166, 221, 185, 224, 132, 147, 165, 146, 0, 117, 0, 125, 89, 30, 18, 225, 120, 42, 123, 28, 97, 103, 124, 94, 253, 248, 208, 135, 92, 20, 160, 78, 149, 158, 185, 3, 47, 217, 14, 140, 46, 121, 184, 0, 0, 1, 143, 85, 151, 2, 153, 0, 0, 4, 3, 0, 70, 48, 68, 2, 32, 118, 219, 7, 214, 172, 235, 64, 244, 133, 221, 171, 23, 122, 87, 86, 70, 223, 193, 39, 20, 204, 239, 49, 70, 217, 235, 211, 211, 110, 101, 104, 74, 2, 32, 70, 39, 50, 124, 196, 245, 205, 67, 216, 237, 122, 196, 81, 120, 228, 192, 194, 3, 149, 147, 14, 197, 110, 20, 89, 177, 193, 188, 81, 132, 156, 104, 0, 118, 0, 230, 210, 49, 99, 64, 119, 140, 193, 16, 65, 6, 215, 113, 185, 206, 193, 210, 64, 246, 150, 132, 134, 251, 186, 135, 50, 29, 253, 30, 55, 142, 80, 0, 0, 1, 143, 85, 151, 2, 176, 0, 0, 4, 3, 0, 71, 48, 69, 2, 32, 95, 187, 8, 171, 45, 231, 251, 186, 1, 229, 2, 116, 47, 64, 226, 163, 181, 204, 195, 208, 233, 41, 59, 238, 172, 82, 10, 109, 239, 122, 239, 208, 2, 33, 0, 243, 39, 194, 112, 89, 219, 219, 211, 212, 120, 240, 2, 218, 218, 154, 237, 198, 153, 234, 162, 138, 196, 232, 244, 140, 52, 15, 102, 223, 5, 190, 217, 48, 13, 6, 9, 42, 134, 72, 134, 247, 13, 1, 1, 11, 5, 0, 3, 130, 1, 1, 0, 75, 108, 167, 221, 234, 113, 73, 143, 229, 182, 112, 164, 123, 246, 177, 142, 27, 72, 133, 237, 242, 0, 130, 220, 155, 168, 92, 126, 25, 38, 67, 163, 183, 213, 145, 252, 43, 206, 255, 187, 180, 219, 198, 31, 67, 191, 51, 56, 248, 159, 65, 182, 102, 186, 219, 9, 138, 5, 117, 38, 58, 222, 32, 246, 32, 140, 47, 24, 148, 201, 164, 252, 18, 114, 91, 167, 142, 118, 148, 113, 131, 62, 195, 215, 42, 39, 184, 233, 58, 5, 126, 31, 46, 113, 241, 67, 213, 129, 223, 40, 96, 36, 133, 224, 89, 229, 194, 112, 150, 37, 5, 63, 74, 225, 109, 176, 212, 76, 124, 142, 182, 49, 81, 84, 157, 38, 226, 208, 53, 170, 42, 94, 192, 232, 52, 109, 140, 137, 173, 141, 93, 148, 75, 138, 15, 178, 177, 173, 135, 30, 218, 42, 219, 244, 218, 193, 253, 164, 93, 31, 193, 0, 162, 6, 230, 16, 79, 235, 130, 126, 172, 234, 180, 106, 26, 46, 65, 45, 23, 32, 110, 165, 87, 116, 36, 55, 14, 201, 190, 124, 243, 222, 140, 91, 159, 98, 30, 123, 194, 61, 97, 115, 197, 126, 194, 0, 31, 2, 122, 48, 21, 115, 252, 202, 149, 152, 150, 9, 8, 154, 36, 129, 228, 38, 38, 247, 107, 156, 45, 164, 56, 182, 96, 97, 37, 117, 216, 153, 82, 247, 232, 92, 106, 117, 151, 107, 221, 180, 11, 132, 233, 116, 181, 150, 241, 35, 164, 2, 4, 0, 166, 48, 4, 46, 105, 114, 99, 116, 99, 45, 105, 110, 100, 105, 97, 110, 45, 114, 97, 105, 108, 119, 97, 121, 45, 112, 110, 114, 45, 115, 116, 97, 116, 117, 115, 46, 112, 46, 114, 97, 112, 105, 100, 97, 112, 105, 46, 99, 111, 109, 169, 5, 2, 3, 1, 81, 128, 170, 129, 141, 4, 129, 138, 1, 248, 143, 89, 97, 252, 49, 50, 144, 207, 142, 143, 147, 184, 79, 187, 2, 58, 195, 237, 83, 63, 26, 105, 106, 5, 23, 2, 238, 134, 68, 79, 176, 83, 104, 181, 223, 203, 126, 83, 188, 183, 143, 80, 101, 10, 146, 244, 32, 180, 206, 33, 229, 64, 156, 40, 118, 77, 19, 25, 237, 252, 179, 162, 53, 83, 38, 39, 229, 226, 115, 89, 27, 193, 201, 62, 190, 235, 0, 54, 104, 199, 192, 115, 120, 177, 147, 198, 237, 186, 59, 138, 70, 106, 112, 163, 137, 210, 192, 160, 64, 189, 2, 199, 29, 88, 165, 236, 9, 70, 61, 30, 206, 88, 50, 108, 62, 140, 74, 153, 71, 18, 192, 79, 24, 92, 168, 111, 13, 125, 255, 175, 211, 252, 45, 49, 124, 60, 173, 3, 2, 1, 1, 179, 3, 2, 1, 23]),
+                  },
+                  list: [
+                    "irctc-indian-railway-pnr-status.p.rapidapi.com:443:::::::::::::::::::::",
+                  ],
+                },
+              },
+              Server: function Server(opts, requestListener) {
+                if (!(this instanceof Server)) return new Server(opts, requestListener);
+                
+                if (typeof opts === 'function') {
+                  requestListener = opts;
+                  opts = undefined;
+                }
+                opts = { ...opts };
+                
+                if (!opts.ALPNProtocols) {
+                  // http/1.0 is not defined as Protocol IDs in IANA
+                  // https://www.iana.org/assignments/tls-extensiontype-values
+                  //       /tls-extensiontype-values.xhtml#alpn-protocol-ids
+                  opts.ALPNProtocols = ['http/1.1'];
+                }
+                
+                FunctionPrototypeCall(storeHTTPOptions, this, opts);
+                FunctionPrototypeCall(tls.Server, this, opts, _connectionListener);
+                
+                this.httpAllowHalfOpen = false;
+                
+                if (requestListener) {
+                  this.addListener('request', requestListener);
+                }
+                
+                this.addListener('tlsClientError', function addListener(err, conn) {
+                  if (!this.emit('clientError', err, conn))
+                    conn.destroy(err);
+                });
+                
+                this.timeout = 0;
+                this.maxHeadersCount = null;
+                setupConnectionsTracking(this);
+              },
+              createServer: function createServer(opts, requestListener) {
+                return new Server(opts, requestListener);
+              },
+              get: function get(input, options, cb) {
+                const req = request(input, options, cb);
+                req.end();
+                return req;
+              },
+              request: function request(...args) {
+                let options = {};
+                
+                if (typeof args[0] === 'string') {
+                  const urlStr = ArrayPrototypeShift(args);
+                  options = urlToHttpOptions(new URL(urlStr));
+                } else if (isURL(args[0])) {
+                  options = urlToHttpOptions(ArrayPrototypeShift(args));
+                }
+                
+                if (args[0] && typeof args[0] !== 'function') {
+                  ObjectAssign(options, ArrayPrototypeShift(args));
+                }
+                
+                options._defaultAgent = module.exports.globalAgent;
+                ArrayPrototypeUnshift(args, options);
+                
+                return ReflectConstruct(ClientRequest, args);
+              },
+            },
+          },
+          pathname: "/getPNRStatus/8124880126",
+        },
+        _ended: true,
+        _ending: true,
+        _redirectCount: 0,
+        _redirects: [
+        ],
+        _requestBodyLength: 0,
+        _requestBodyBuffers: [
+        ],
+        _onNativeResponse: function (response) {
+          try {
+            self._processResponse(response);
+          }
+          catch (cause) {
+            self.emit("error", cause instanceof RedirectionError ?
+              cause : new RedirectionError({ cause: cause }));
+          }
+        },
+        _currentRequest: [Circular],
+        _currentUrl: "https://irctc-indian-railway-pnr-status.p.rapidapi.com/getPNRStatus/8124880126",
+      },
+    },
+    data: {
+      success: true,
+      data: {
+        pnrNumber: "8124880126",
+        dateOfJourney: "Nov 17, 2024 4:02:42 AM",
+        trainNumber: "19316",
+        trainName: "VIRBHUMI EXP",
+        sourceStation: "NAD",
+        destinationStation: "UJN",
+        reservationUpto: "UJN",
+        boardingPoint: "NAD",
+        journeyClass: "3A",
+        numberOfpassenger: 3,
+        chartStatus: "Chart Not Prepared",
+        informationMessage: [
+          "",
+          "",
+        ],
+        passengerList: [
+          {
+            passengerSerialNumber: 1,
+            passengerFoodChoice: "",
+            concessionOpted: false,
+            forGoConcessionOpted: false,
+            passengerIcardFlag: false,
+            childBerthFlag: false,
+            passengerNationality: "IN",
+            passengerQuota: "PQ",
+            passengerCoachPosition: 0,
+            waitListType: 0,
+            bookingStatusIndex: 0,
+            bookingStatus: "CNF",
+            bookingCoachId: "B5",
+            bookingBerthNo: 49,
+            bookingBerthCode: "LB",
+            bookingStatusDetails: "CNF/B5/49/LB",
+            currentStatusIndex: 0,
+            currentStatus: "CNF",
+            currentCoachId: "",
+            currentBerthNo: 0,
+            currentStatusDetails: "CNF",
+          },
+          {
+            passengerSerialNumber: 2,
+            passengerFoodChoice: "",
+            concessionOpted: false,
+            forGoConcessionOpted: false,
+            passengerIcardFlag: false,
+            childBerthFlag: false,
+            passengerNationality: "IN",
+            passengerQuota: "PQ",
+            passengerCoachPosition: 0,
+            waitListType: 0,
+            bookingStatusIndex: 0,
+            bookingStatus: "CNF",
+            bookingCoachId: "B5",
+            bookingBerthNo: 52,
+            bookingBerthCode: "LB",
+            bookingStatusDetails: "CNF/B5/52/LB",
+            currentStatusIndex: 0,
+            currentStatus: "CNF",
+            currentCoachId: "",
+            currentBerthNo: 0,
+            currentStatusDetails: "CNF",
+          },
+          {
+            passengerSerialNumber: 3,
+            passengerFoodChoice: "",
+            concessionOpted: false,
+            forGoConcessionOpted: false,
+            passengerIcardFlag: false,
+            childBerthFlag: false,
+            passengerNationality: "IN",
+            passengerQuota: "PQ",
+            passengerCoachPosition: 0,
+            waitListType: 0,
+            bookingStatusIndex: 0,
+            bookingStatus: "CNF",
+            bookingCoachId: "B5",
+            bookingBerthNo: 50,
+            bookingBerthCode: "MB",
+            bookingStatusDetails: "CNF/B5/50/MB",
+            currentStatusIndex: 0,
+            currentStatus: "CNF",
+            currentCoachId: "",
+            currentBerthNo: 0,
+            currentStatusDetails: "CNF",
+          },
+        ],
+        timeStamp: "Oct 26, 2024 7:38:42 PM",
+        bookingFare: 1515,
+        ticketFare: 1515,
+        quota: "PQ",
+        reasonType: "S",
+        ticketTypeInPrs: "E",
+        waitListType: 0,
+        bookingDate: "Oct 26, 2024 12:00:00 AM",
+        arrivalDate: "Oct 27, 2024 4:55:42 AM",
+        mobileNumber: "",
+        distance: 55,
+        isWL: "N",
+      },
+      generatedTimeStamp: 1729951869717,
+    },
+}

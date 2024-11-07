@@ -33,12 +33,30 @@
           background-color: #04AA6D;
           color: white;
       }
+
+      /* styling trainNumber/Name */
+      .pnrDetailsLayout .flexContainer
+      {
+        display: flex;
+        gap: 20%;
+      }
+
+      .sameDate
+      {
+        display: none;
+      }
+
+      .changeBackground
+      {
+        background-color: #04AA6D;
+      }
+
   </style>
 
 </head>
 <body>
     <div class="container">
-        <h1>Show My Journey</h1>
+        <h1>Show My Journey</h1>   
   
         <div class="cards-container">
           {%JOURNEY_CARDS%}

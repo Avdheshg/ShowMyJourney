@@ -1,26 +1,22 @@
 
 
-<div class="pnrDetailsLayout">
+<div class="pnrDetailsLayout {%changeBackground%}">
 
   <div style="overflow-x:auto;">
-    <h3 class="dateOfJourney">{%DateOfJourney%}</h3>
-    <h6>PNR. {%PNRNumber%}</h6>
-    <div class="otherDetails">
-      <p class="trainNumber">{%TrainNumber%}</p>
-      <p class="trainName">{%TrainName%}</p>
-      <p class="fromStation">{%SourceStation%}</p>
-      <p class="toStation">{%DestinationStation%}</p>
-    </div>
+    <h2 class="dateOfJourney {%isSameDate%}">{%DateOfJourney%}</h3>
+      <div class="otherDetails flexContainer">
+        <h3>PNR. {%PNRNumber%}</h6>
+          <p class="trainNumber">{%TrainNumber%} / {%TrainName%}</p>
+          <p class="fromStation">{%SourceStation%} --- {%DestinationStation%}</p>
+      </div>
 
-    {%BookingStatusTable%}
+      {%BookingStatusTable%}
 
   </div>
 
-  <div class="reservationDetails">
-    <p class="distance">{%Distance%} KM</p>
-    <p class="fare">Rs. {%BookingFare%}</p>
-    <p class="journeyClass">{%JourneyClass%}</p>
-    <p class="chartPrepared">{%ChartPrepared%}</p>
+  <div class="reservationDetails flexContainer">
+    <p class="distance">{%Distance%} KM / Rs. {%BookingFare%}</p>
+    <p class="journeyClass">{%JourneyClass%} / {%ChartPrepared%}</p>
 
   </div>
 

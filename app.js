@@ -252,7 +252,7 @@ app.listen(port, () => {
 /**
  * Another API: https://rapidapi.com/shivesh96/api/real-time-pnr-status-api-for-indian-railways/pricing    100/Month
  
-    Current API: 
+    Current API: _XhVwKDuKDFb1zwE7-
     Current: Able to make the request to news API
              
     1. Create another server with 2 end points:
@@ -325,6 +325,7 @@ For this project, V need to sort the data according to the
     * Create own API to deliver data
 
 
+    MDB : mongodb+srv://avdeshg804:_@cluster0.k8gaw.mongodb.net/
 
 
 */

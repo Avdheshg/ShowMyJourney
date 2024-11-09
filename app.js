@@ -325,7 +325,6 @@ For this project, V need to sort the data according to the
     * Create own API to deliver data
 
 
-    MDB : mongodb+srv://avdeshg804:XhVwKDuKDFb1zwE7@cluster0.k8gaw.mongodb.net/
 
 
 */

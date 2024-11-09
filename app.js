@@ -28,31 +28,57 @@ let JourneyOverviewLayout = fs.readFileSync(`${__dirname}/journeyOverview.html`,
 // console.log(JourneyOverviewLayout);
 
 let allJourneyDateTime = []; 
-let pnrDetailsObject = {};
+let pnrDetailsObject = {}; 
+let errorResponse = "";
+
+async function CallAPI(currentPNR)
+{
+    let responseData = await axios.request(`https://irctc-indian-railway-pnr-status.p.rapidapi.com/getPNRStatus/${currentPNR}`, options);       // type : object
+
+    let statusCode = responseData.status;
+    responseData = responseData.data.data;
+    console.log(typeof responseData); 
+
+    return [statusCode, responseData];
+}
+
+async function CallLocalhost(currentPNR)
+{
+    let responseData = await axios.request(`http://localhost:4000/${currentPNR}`, options);
+    const statusCode = responseData.status;
+    responseData = responseData.data.data;
+
+    return [statusCode, responseData];
+}
 
 app.get("/pnr", async (req, res) => { 
 
     let allPNRDetailsOutput = "";
+    let AllJsonPnrResponse = [];
+    let count = 1;
+
     for (let pnr of pnrList)
     {
         let currPNRdateTime;
         try 
         {
 
+            // if (count == 2)
+            // {
+            //     break;   // create an array for the responseDate we will receive from the API call(1 PNR. it's giving 1 data. V need to save these JSON data into an array and then save it into the file for future use).
+            //     // return res.status(200).send("<h1>1 Reuqests made</h1>");
+            // }
+            // count++;
+
+            
             let currentPNR = `${pnr}`; 
+            
+            // const [statusCode, responseData] = await CallAPI(currentPNR);
 
-            // ** Call to the API for data  **
-            // let responseData = await axios.request(`https://irctc-indian-railway-pnr-status.p.rapidapi.com/getPNRStatus/${currentPNR}`, options);       // type : object
+            const [statusCode, responseData] = await CallLocalhost(currentPNR);
 
-            // let statusCode = responseData.status;
-            // responseData = responseData.data.data;
-            // console.log(response.data);
+            AllJsonPnrResponse.push(responseData);
 
-            // ** Calling custom API endpoint  **
-            var responseData = await axios.request(`http://localhost:4000/${currentPNR}`, options);
-            const statusCode = responseData.status;
-            responseData = responseData.data.data;
-        
             if (statusCode === 200)
             {                   
                 currPNRdateTime = new Date(responseData.dateOfJourney);
@@ -95,12 +121,13 @@ app.get("/pnr", async (req, res) => {
         }
         catch (error)
         {
-            console.error(error.response);
+            errorResponse += `${error}\n\n\n\n`;
+            // console.error("error");
         }
 
-    }
+    } 
 
-    allJourneyDateTime.sort();
+    allJourneyDateTime.sort();    
 
     let previousDate = new Date("11/17/2023, 7:35:50 PM");
   
@@ -108,18 +135,33 @@ app.get("/pnr", async (req, res) => {
     {   
         // console.log(`currDateTime: ${currDateTime}, curr PNR details: ${pnrDetailsObject[currDateTime.toLocaleString()].sourceStation}`);
         let currPNRDetails = pnrDetailsObject[currDateTime.toLocaleString()];
-
+ 
         let stringToReplace = ["DateOfJourney", "PNRNumber", "TrainNumber", "TrainName", "SourceStation", "DestinationStation", "Distance", "BookingFare", "JourneyClass", "ChartPrepared"]
 
         let replacingData = [currPNRDetails.dateOfJourney.toLocaleString(), currPNRDetails.pnrNumber, currPNRDetails.trainNumber, currPNRDetails.trainName, currPNRDetails.sourceStation, currPNRDetails.destinationStation, currPNRDetails.distance, currPNRDetails.bookingFare, currPNRDetails.journeyClass, currPNRDetails.chartPrepared];
 
         // console.log(typeof `/{%DateOfJourney%}/g`)
 
-        let pnrDetailsOutput = PNRDetailsLayout;
+        let pnrDetailsOutput = PNRDetailsLayout; 
         for (let i = 0; i < stringToReplace.length; i++)
         {
             pnrDetailsOutput = ReplaceString(pnrDetailsOutput, new RegExp(`{%${stringToReplace[i]}%}`, "g"), replacingData[i]);
         }
+
+        // let cDate = currDateTime.toDateString();
+        // let pDate = previousDate.toDateString();
+        // console.log(`currDateTime.toDateString() > previousDate.toDateString(): ${currDateTime.toDateString() > previousDate.toDateString()}`); 
+  
+        if (currDateTime.toDateString() > previousDate.toDateString())
+        {
+            
+        }
+        if (currDateTime.toDateString() === previousDate.toDateString()) 
+        {
+            pnrDetailsOutput = ReplaceString(pnrDetailsOutput, new RegExp(`{%isSameDate%}`, "g"), "sameDate");
+            
+        }
+        previousDate = currDateTime;
 
         let passengersList = currPNRDetails.passengerList;
 
@@ -149,13 +191,23 @@ app.get("/pnr", async (req, res) => {
         allPNRDetailsOutput += pnrDetailsOutput;
     }
     
+    
+
     JourneyOverviewLayout = ReplaceString(JourneyOverviewLayout, new RegExp("{%JOURNEY_CARDS%}", "g"), allPNRDetailsOutput);
 
     fs.writeFileSync(`${__dirname}/Copy_JourneyOverviewLayout.html`, JourneyOverviewLayout);
-    
-    // SaveJSONIntoFile(`${__dirname}/pnrDetails.json`, pnrDetails);
 
-    res.status(200).sendFile(`${__dirname}/Copy_JourneyOverviewLayout.html`);
+    // fs.writeFileSync(`${__dirname}/pnrDetails.json`, JSON.stringify(AllJsonPnrResponse));
+    
+    // SaveJSONIntoFile(`${__dirname}/pnrDetails.json`, responseData);
+
+    if (errorResponse !== "")
+    {   
+        console.log(`${errorResponse}`)
+        return res.status(400).send(`<h1>${errorResponse}</h1>`)
+    }
+
+    return res.status(200).sendFile(`${__dirname}/Copy_JourneyOverviewLayout.html`);
 
 })
 
@@ -172,7 +224,8 @@ function SaveJSONIntoFile(filePath, data)
     if (data.length > 0)
     {
         try 
-        {
+        {   
+            fs.writeFileSync(filePath,"");
             fs.writeFileSync(filePath, JSON.stringify(data));
             console.log("file written successfully!")
         }
@@ -183,7 +236,7 @@ function SaveJSONIntoFile(filePath, data)
     }
 }
 
-
+ 
 const port = 3000;
 app.listen(port, () => {
     console.log("Server is running on the port 3000");
@@ -191,7 +244,7 @@ app.listen(port, () => {
 
 
 
-
+  
 
 
 
@@ -251,17 +304,9 @@ For this project, V need to sort the data according to the
     * For each day, V will only make one time PNR calls to the API 
         We will hold the status into DB and stop the further call to the API for the rest of the day
 
-    ** Holding Sorted PNR Details **
-    1. Defin an array  
-    2. Define an object
-    3. Define a key = Date + Time 
-        1. Add this key into the object
-        2. Add this key into the array  
-    4. At the end, sort the array
-    5. TR the array and save the details into the template
-
     ** 1 date for 1 date PNRs => Alternate date, different color  
     ** Make a call for all PNR
+    ** Count of total calls made for an API
     ** Have better variable names
     ** Replace saving into file with Mongo  
     ** Save the previous entered PNRs until validation
@@ -269,6 +314,7 @@ For this project, V need to sort the data according to the
     ** Code cleanup
     ** Have correct file structure  
     ** Implement API calling limit   
+    ** Once we have received CNF for a PNR, we can propmpt the user, if he still wants to send the request for these PNRs   
     ** Have OAuth
     ** Add logger
     ** 
@@ -276,9 +322,15 @@ For this project, V need to sort the data according to the
 
     ** Features **
     * Will change the BG on date change
+    * Create own API to deliver data
+
+
+    MDB : mongodb+srv://avdeshg804:XhVwKDuKDFb1zwE7@cluster0.k8gaw.mongodb.net/
+
+
 */
  
-
+ 
 
 
 

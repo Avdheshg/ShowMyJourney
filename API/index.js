@@ -5,6 +5,7 @@ const fs = require("fs");
 const app = express();
 
 const allPNRDetails = JSON.parse(fs.readFileSync(`${__dirname}/responseSuccess.json`, 'utf-8'));
+console.log(allPNRDetails.length)
 
 // console.log(successJSONData)
 
